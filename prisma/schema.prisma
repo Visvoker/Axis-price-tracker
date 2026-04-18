@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum GroupType {
+  PERSONAL
+  GUILD
+}
+
+enum GroupRole {
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  memberships  GroupMember[]
+  priceRecords PriceRecord[] @relation("PriceRecordCreatedBy")
+}
+
+model Group {
+  id         String    @id @default(cuid())
+  name       String
+  type       GroupType
+  inviteCode String?   @unique
+  maxMembers Int       @default(10)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  members GroupMember[]
+  items   Item[]
+}
+
+model GroupMember {
+  id        String    @id @default(cuid())
+  userId    String
+  groupId   String
+  role      GroupRole @default(MEMBER)
+  createdAt DateTime  @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@index([groupId])
+}
+
+model Item {
+  id        String   @id @default(cuid())
+  name      String
+  category  String?
+  note      String?
+  groupId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group  Group         @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  prices PriceRecord[]
+
+  @@unique([groupId, name])
+  @@index([groupId])
+}
+
+model PriceRecord {
+  id          String @id @default(cuid())
+  itemId      String
+  createdById String
+
+  totalPrice Decimal @db.Decimal(12, 2)
+  quantity   Int
+  unitPrice  Decimal @db.Decimal(12, 2)
+
+  note       String?
+  recordedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  item      Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  createdBy User @relation("PriceRecordCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([itemId, recordedAt])
+  @@index([createdById])
+}
+
+// NextAuth
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([sessionToken])
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
