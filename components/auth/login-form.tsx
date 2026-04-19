@@ -12,8 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { signIn } from "next-auth/react";
 
-export default function LoginPage() {
+export function LoginForm() {
   return (
     <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-sm">
@@ -57,11 +58,12 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google", { callbackUrl: "/123" })}
+          >
             Login with Google
-          </Button>
-          <Button variant="destructive" className="w-full">
-            test
           </Button>
         </CardFooter>
       </Card>

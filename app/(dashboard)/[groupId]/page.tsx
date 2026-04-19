@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { auth, signOut } from "@/auth";
+import Link from "next/link";
 
-export default async function HomePage() {
+export default async function Dashboard() {
   const session = await auth();
 
   if (!session?.user) {
