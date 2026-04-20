@@ -61,7 +61,7 @@ export function LoginForm() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/123" })}
+            onClick={() => signIn("google", { callbackUrl: "/select-group" })}
           >
             Login with Google
           </Button>
