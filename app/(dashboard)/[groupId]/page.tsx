@@ -1,4 +1,5 @@
 import { auth, signOut } from "@/auth";
+import { getFirstGroupByUserId } from "@/lib/queries/group";
 import Link from "next/link";
 
 export default async function Dashboard() {
