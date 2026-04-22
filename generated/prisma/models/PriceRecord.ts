@@ -27,107 +27,69 @@ export type AggregatePriceRecord = {
 }
 
 export type PriceRecordAvgAggregateOutputType = {
-  totalPrice: runtime.Decimal | null
-  quantity: number | null
-  unitPrice: runtime.Decimal | null
+  price: runtime.Decimal | null
 }
 
 export type PriceRecordSumAggregateOutputType = {
-  totalPrice: runtime.Decimal | null
-  quantity: number | null
-  unitPrice: runtime.Decimal | null
+  price: runtime.Decimal | null
 }
 
 export type PriceRecordMinAggregateOutputType = {
   id: string | null
   itemId: string | null
   createdById: string | null
-  totalPrice: runtime.Decimal | null
-  quantity: number | null
-  unitPrice: runtime.Decimal | null
-  note: string | null
-  recordedAt: Date | null
+  price: runtime.Decimal | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type PriceRecordMaxAggregateOutputType = {
   id: string | null
   itemId: string | null
   createdById: string | null
-  totalPrice: runtime.Decimal | null
-  quantity: number | null
-  unitPrice: runtime.Decimal | null
-  note: string | null
-  recordedAt: Date | null
+  price: runtime.Decimal | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type PriceRecordCountAggregateOutputType = {
   id: number
   itemId: number
   createdById: number
-  totalPrice: number
-  quantity: number
-  unitPrice: number
-  note: number
-  recordedAt: number
+  price: number
   createdAt: number
-  updatedAt: number
   _all: number
 }
 
 
 export type PriceRecordAvgAggregateInputType = {
-  totalPrice?: true
-  quantity?: true
-  unitPrice?: true
+  price?: true
 }
 
 export type PriceRecordSumAggregateInputType = {
-  totalPrice?: true
-  quantity?: true
-  unitPrice?: true
+  price?: true
 }
 
 export type PriceRecordMinAggregateInputType = {
   id?: true
   itemId?: true
   createdById?: true
-  totalPrice?: true
-  quantity?: true
-  unitPrice?: true
-  note?: true
-  recordedAt?: true
+  price?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type PriceRecordMaxAggregateInputType = {
   id?: true
   itemId?: true
   createdById?: true
-  totalPrice?: true
-  quantity?: true
-  unitPrice?: true
-  note?: true
-  recordedAt?: true
+  price?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type PriceRecordCountAggregateInputType = {
   id?: true
   itemId?: true
   createdById?: true
-  totalPrice?: true
-  quantity?: true
-  unitPrice?: true
-  note?: true
-  recordedAt?: true
+  price?: true
   createdAt?: true
-  updatedAt?: true
   _all?: true
 }
 
@@ -221,13 +183,8 @@ export type PriceRecordGroupByOutputType = {
   id: string
   itemId: string
   createdById: string
-  totalPrice: runtime.Decimal
-  quantity: number
-  unitPrice: runtime.Decimal
-  note: string | null
-  recordedAt: Date
+  price: runtime.Decimal
   createdAt: Date
-  updatedAt: Date
   _count: PriceRecordCountAggregateOutputType | null
   _avg: PriceRecordAvgAggregateOutputType | null
   _sum: PriceRecordSumAggregateOutputType | null
@@ -257,13 +214,8 @@ export type PriceRecordWhereInput = {
   id?: Prisma.StringFilter<"PriceRecord"> | string
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
   createdById?: Prisma.StringFilter<"PriceRecord"> | string
-  totalPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFilter<"PriceRecord"> | number
-  unitPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
-  recordedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
+  price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -272,13 +224,8 @@ export type PriceRecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
-  note?: Prisma.SortOrderInput | Prisma.SortOrder
-  recordedAt?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   item?: Prisma.ItemOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
 }
@@ -290,13 +237,8 @@ export type PriceRecordWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PriceRecordWhereInput | Prisma.PriceRecordWhereInput[]
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
   createdById?: Prisma.StringFilter<"PriceRecord"> | string
-  totalPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFilter<"PriceRecord"> | number
-  unitPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
-  recordedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
+  price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -305,13 +247,8 @@ export type PriceRecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
-  note?: Prisma.SortOrderInput | Prisma.SortOrder
-  recordedAt?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   _count?: Prisma.PriceRecordCountOrderByAggregateInput
   _avg?: Prisma.PriceRecordAvgOrderByAggregateInput
   _max?: Prisma.PriceRecordMaxOrderByAggregateInput
@@ -326,24 +263,14 @@ export type PriceRecordScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
   itemId?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
   createdById?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
-  totalPrice?: Prisma.DecimalWithAggregatesFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntWithAggregatesFilter<"PriceRecord"> | number
-  unitPrice?: Prisma.DecimalWithAggregatesFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.StringNullableWithAggregatesFilter<"PriceRecord"> | string | null
-  recordedAt?: Prisma.DateTimeWithAggregatesFilter<"PriceRecord"> | Date | string
+  price?: Prisma.DecimalWithAggregatesFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PriceRecord"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PriceRecord"> | Date | string
 }
 
 export type PriceRecordCreateInput = {
   id?: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutPricesInput
   createdBy: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
 }
@@ -352,24 +279,14 @@ export type PriceRecordUncheckedCreateInput = {
   id?: string
   itemId: string
   createdById: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutPricesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutPriceRecordsNestedInput
 }
@@ -378,50 +295,30 @@ export type PriceRecordUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordCreateManyInput = {
   id?: string
   itemId: string
   createdById: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordListRelationFilter = {
@@ -438,51 +335,32 @@ export type PriceRecordCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
-  note?: Prisma.SortOrder
-  recordedAt?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type PriceRecordAvgOrderByAggregateInput = {
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
 }
 
 export type PriceRecordMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
-  note?: Prisma.SortOrder
-  recordedAt?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type PriceRecordMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
-  note?: Prisma.SortOrder
-  recordedAt?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type PriceRecordSumOrderByAggregateInput = {
-  totalPrice?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  unitPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
 }
 
 export type PriceRecordCreateNestedManyWithoutCreatedByInput = {
@@ -579,26 +457,16 @@ export type DecimalFieldUpdateOperationsInput = {
 
 export type PriceRecordCreateWithoutCreatedByInput = {
   id?: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutPricesInput
 }
 
 export type PriceRecordUncheckedCreateWithoutCreatedByInput = {
   id?: string
   itemId: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordCreateOrConnectWithoutCreatedByInput = {
@@ -634,37 +502,22 @@ export type PriceRecordScalarWhereInput = {
   id?: Prisma.StringFilter<"PriceRecord"> | string
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
   createdById?: Prisma.StringFilter<"PriceRecord"> | string
-  totalPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFilter<"PriceRecord"> | number
-  unitPrice?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
-  recordedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
+  price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
 }
 
 export type PriceRecordCreateWithoutItemInput = {
   id?: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
   createdBy: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
 }
 
 export type PriceRecordUncheckedCreateWithoutItemInput = {
   id?: string
   createdById: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordCreateOrConnectWithoutItemInput = {
@@ -696,97 +549,57 @@ export type PriceRecordUpdateManyWithWhereWithoutItemInput = {
 export type PriceRecordCreateManyCreatedByInput = {
   id?: string
   itemId: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutPricesNestedInput
 }
 
 export type PriceRecordUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordCreateManyItemInput = {
   id?: string
   createdById: string
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity: number
-  unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: string | null
-  recordedAt: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type PriceRecordUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneRequiredWithoutPriceRecordsNestedInput
 }
 
 export type PriceRecordUncheckedUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordUncheckedUpdateManyWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -795,13 +608,8 @@ export type PriceRecordSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   itemId?: boolean
   createdById?: boolean
-  totalPrice?: boolean
-  quantity?: boolean
-  unitPrice?: boolean
-  note?: boolean
-  recordedAt?: boolean
+  price?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
@@ -810,13 +618,8 @@ export type PriceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   itemId?: boolean
   createdById?: boolean
-  totalPrice?: boolean
-  quantity?: boolean
-  unitPrice?: boolean
-  note?: boolean
-  recordedAt?: boolean
+  price?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
@@ -825,13 +628,8 @@ export type PriceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   itemId?: boolean
   createdById?: boolean
-  totalPrice?: boolean
-  quantity?: boolean
-  unitPrice?: boolean
-  note?: boolean
-  recordedAt?: boolean
+  price?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
@@ -840,16 +638,11 @@ export type PriceRecordSelectScalar = {
   id?: boolean
   itemId?: boolean
   createdById?: boolean
-  totalPrice?: boolean
-  quantity?: boolean
-  unitPrice?: boolean
-  note?: boolean
-  recordedAt?: boolean
+  price?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
 }
 
-export type PriceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "createdById" | "totalPrice" | "quantity" | "unitPrice" | "note" | "recordedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["priceRecord"]>
+export type PriceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "createdById" | "price" | "createdAt", ExtArgs["result"]["priceRecord"]>
 export type PriceRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -873,13 +666,8 @@ export type $PriceRecordPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     itemId: string
     createdById: string
-    totalPrice: runtime.Decimal
-    quantity: number
-    unitPrice: runtime.Decimal
-    note: string | null
-    recordedAt: Date
+    price: runtime.Decimal
     createdAt: Date
-    updatedAt: Date
   }, ExtArgs["result"]["priceRecord"]>
   composites: {}
 }
@@ -1308,13 +1096,8 @@ export interface PriceRecordFieldRefs {
   readonly id: Prisma.FieldRef<"PriceRecord", 'String'>
   readonly itemId: Prisma.FieldRef<"PriceRecord", 'String'>
   readonly createdById: Prisma.FieldRef<"PriceRecord", 'String'>
-  readonly totalPrice: Prisma.FieldRef<"PriceRecord", 'Decimal'>
-  readonly quantity: Prisma.FieldRef<"PriceRecord", 'Int'>
-  readonly unitPrice: Prisma.FieldRef<"PriceRecord", 'Decimal'>
-  readonly note: Prisma.FieldRef<"PriceRecord", 'String'>
-  readonly recordedAt: Prisma.FieldRef<"PriceRecord", 'DateTime'>
+  readonly price: Prisma.FieldRef<"PriceRecord", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"PriceRecord", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"PriceRecord", 'DateTime'>
 }
     
 

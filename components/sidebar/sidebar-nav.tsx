@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Users, Settings } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Users,
+  Settings,
+  BadgeDollarSign,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -10,6 +16,7 @@ const iconMap = {
   package: Package,
   users: Users,
   settings: Settings,
+  badgeDollarSign: BadgeDollarSign,
 };
 
 export type NavItem = {
@@ -30,18 +37,17 @@ export function SidebarNav({ items }: SidebarNavProps) {
       {items.map((item) => {
         const Icon = iconMap[item.icon];
 
-        const isActive =
-          pathname === item.href || pathname.startsWith(`${item.href}/`);
+        const isActive = pathname === item.href;
 
         return (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium leading-5 transition-all",
               isActive
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                ? "bg-[#F3F4F3] text-foreground "
+                : "text-foreground/70 hover:bg-[#F7F7F7] hover:text-foreground",
             )}
           >
             <Icon className="h-4 w-4" />

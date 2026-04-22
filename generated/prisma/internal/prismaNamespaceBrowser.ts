@@ -131,13 +131,8 @@ export const PriceRecordScalarFieldEnum = {
   id: 'id',
   itemId: 'itemId',
   createdById: 'createdById',
-  totalPrice: 'totalPrice',
-  quantity: 'quantity',
-  unitPrice: 'unitPrice',
-  note: 'note',
-  recordedAt: 'recordedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  price: 'price',
+  createdAt: 'createdAt'
 } as const
 
 export type PriceRecordScalarFieldEnum = (typeof PriceRecordScalarFieldEnum)[keyof typeof PriceRecordScalarFieldEnum]
