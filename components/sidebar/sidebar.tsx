@@ -1,17 +1,24 @@
-import Link from "next/link";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Headset } from "lucide-react";
 import { SidebarNav, type NavItem } from "@/components/sidebar/sidebar-nav";
+import { SidebarUser } from "./sidebar-user";
 
 type SidebarProps = {
   groupId: string;
   groupName: string;
   groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
+  name: string;
+  image: string;
 };
 
-export function Sidebar({ groupId, groupName, groupType, role }: SidebarProps) {
+export function Sidebar({
+  groupId,
+  groupName,
+  groupType,
+  role,
+  name,
+  image,
+}: SidebarProps) {
   const navItems: NavItem[] = [
     {
       title: "Dashboard",
@@ -22,6 +29,11 @@ export function Sidebar({ groupId, groupName, groupType, role }: SidebarProps) {
       title: "Items",
       href: `/${groupId}/items`,
       icon: "package",
+    },
+    {
+      title: "Price Records",
+      href: `/${groupId}/price-records`,
+      icon: "badgeDollarSign",
     },
   ];
 
@@ -40,33 +52,26 @@ export function Sidebar({ groupId, groupName, groupType, role }: SidebarProps) {
   });
 
   return (
-    <aside className="w-72 border-r bg-muted/30 p-4">
-      <div className="flex h-full flex-col gap-4">
-        <Card>
-          <CardHeader className="gap-2">
-            <CardTitle className="text-base">
-              <Link href={`/${groupId}`} className="hover:underline">
-                {groupName}
-              </Link>
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary">{groupType}</Badge>
-              <Badge variant={role === "ADMIN" ? "default" : "outline"}>
-                {role}
-              </Badge>
-            </div>
-          </CardHeader>
-        </Card>
+    <aside className="flex h-screen w-72 flex-col justify-between border-r bg-background px-4 py-5">
+      <div className="space-y-6">
+        <div className="px-2">
+          <h1 className="text-xl font-semibold tracking-tight">
+            AxisPriceTracker
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Guild Price Tracker
+          </p>
+        </div>
 
-        <Card className="flex-1">
-          <CardContent className="p-3">
-            <SidebarNav items={navItems} />
-          </CardContent>
-        </Card>
+        <div className="mx-2 border-t border-[#E7E8E7]" />
 
-        <Card>
-          <CardContent className="p-3 ">logout</CardContent>
-        </Card>
+        <nav>
+          <SidebarNav items={navItems} />
+        </nav>
+      </div>
+
+      <div className="mx-2 border-t border-[#E7E8E7] pt-4 flex items-center gap-3 text-lg">
+        <SidebarUser name={name} image={image} />
       </div>
     </aside>
   );
