@@ -32,17 +32,26 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar
-        groupId={membership.group.id}
-        groupName={membership.group.name}
-        groupType={membership.group.type}
-        role={membership.role}
-        name={session.user.name}
-        image={session.user.image}
-      />
-      <main className="flex min-w-0 flex-1 flex-col">
-        <Topbar groupName={membership.group.name} />
+    <div className="flex min-h-screen bg-muted">
+      <div className="hidden md:flex">
+        <Sidebar
+          groupId={membership.group.id}
+          groupName={membership.group.name}
+          groupType={membership.group.type}
+          role={membership.role}
+          name={session.user.name}
+          image={session.user.image}
+        />
+      </div>
+      <main className="flex min-w-0 flex-1 flex-col rounded-lg bg-background md:overflow-hidden md:m-2">
+        <Topbar
+          groupId={membership.group.id}
+          groupName={membership.group.name}
+          groupType={membership.group.type}
+          role={membership.role}
+          name={session.user.name}
+          image={session.user.image}
+        />
         <PageContainer>{children}</PageContainer>
       </main>
     </div>
