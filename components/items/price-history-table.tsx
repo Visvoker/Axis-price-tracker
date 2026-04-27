@@ -34,9 +34,10 @@ export function PriceHistoryTable({ prices }: PriceHistoryTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Price</TableHead>
-            <TableHead>Recorded By</TableHead>
-            <TableHead>Created At</TableHead>
+            <TableHead className="">Price</TableHead>
+            <TableHead className="text-right">Recorded By</TableHead>
+            <TableHead className="text-right">Created At</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -44,22 +45,14 @@ export function PriceHistoryTable({ prices }: PriceHistoryTableProps) {
           {prices.map((p) => (
             <TableRow key={p.id}>
               {/* Price */}
-              <TableCell className="tabular-nums">
-                {Number(p.price).toLocaleString()}
-              </TableCell>
+              <TableCell>{Number(p.price).toLocaleString()}</TableCell>
 
               {/* User */}
-              <TableCell>{p.createdBy?.name ?? "-"}</TableCell>
+              <TableCell className="text-right">
+                {p.createdBy?.name ?? "-"}
+              </TableCell>
 
-              {/* Date */}
-
-              {/* Uncaught Error: Hydration failed */}
-
-              {/* <TableCell className="text-muted-foreground">
-                {new Date(p.createdAt).toLocaleString()}
-              </TableCell> */}
-
-              <TableCell className="text-muted-foreground">
+              <TableCell className="text-muted-foreground text-right ">
                 {new Date(p.createdAt).toLocaleString("zh-TW", {
                   year: "numeric",
                   month: "2-digit",
@@ -70,6 +63,8 @@ export function PriceHistoryTable({ prices }: PriceHistoryTableProps) {
                   timeZone: "Asia/Taipei",
                 })}
               </TableCell>
+
+              <TableCell className="text-right">123</TableCell>
             </TableRow>
           ))}
         </TableBody>
