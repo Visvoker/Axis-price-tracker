@@ -46,8 +46,8 @@ export function SidebarNav({ items }: SidebarNavProps) {
             className={cn(
               "flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium leading-5 transition-all",
               isActive
-                ? "bg-[#F3F4F3] text-foreground "
-                : "text-foreground/70 hover:bg-[#F7F7F7] hover:text-foreground",
+                ? "bg-chart-1 text-chart-5 "
+                : "text-chart-5/70 hover:bg-chart-1/20 hover:text-chart-5",
             )}
           >
             <Icon className="h-4 w-4" />
