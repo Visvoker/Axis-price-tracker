@@ -31,7 +31,7 @@ export function MobileSidebar(props: MobileSidebarProps) {
           <Menu className="h-4 w-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[260px] p-0">
+      <SheetContent side="left">
         <SidebarContent {...props} />
       </SheetContent>
     </Sheet>

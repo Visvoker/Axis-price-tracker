@@ -25,8 +25,6 @@ export default async function DashboardLayout({
     params.groupId,
   );
 
-  console.log(membership);
-
   if (!membership) {
     redirect("/select-group");
   }

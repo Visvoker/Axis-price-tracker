@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useParams } from "next/navigation";
 
 type Item = {
   id: string;
@@ -37,6 +39,9 @@ export function ItemsTable({
   onDelete,
   onEdit,
 }: ItemsTableProps) {
+  const params = useParams();
+  const groupId = params.groupId as string;
+
   return (
     <div className="rounded-xl border bg-background">
       <Table>
@@ -53,7 +58,14 @@ export function ItemsTable({
           {items.map((item) => (
             <TableRow key={item.id}>
               {/* Name */}
-              <TableCell className="font-medium">{item.name}</TableCell>
+              <TableCell className="font-medium">
+                <Link
+                  href={`/${groupId}/items/${item.id}`}
+                  className="hover:underline"
+                >
+                  {item.name}
+                </Link>
+              </TableCell>
 
               {/* Latest Price */}
               <TableCell>
