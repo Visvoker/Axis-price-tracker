@@ -5,8 +5,8 @@ type SidebarProps = {
   groupName: string;
   groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
-  name: string;
-  image: string;
+  name?: string | null;
+  image?: string | null;
 };
 
 export function Sidebar({

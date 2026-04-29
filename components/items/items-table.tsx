@@ -17,7 +17,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { AddPriceDialog } from "./add-price-dialog";
+import { createPriceRecord } from "@/lib/actions/price";
 
 type Item = {
   id: string;
@@ -28,18 +30,14 @@ type Item = {
 
 type ItemsTableProps = {
   items: Item[];
-  onAddPrice: (itemId: string) => void;
   onEdit: (itemId: string) => void;
   onDelete: (itemId: string) => void;
 };
 
-export function ItemsTable({
-  items,
-  onAddPrice,
-  onDelete,
-  onEdit,
-}: ItemsTableProps) {
+export function ItemsTable({ items, onDelete, onEdit }: ItemsTableProps) {
   const params = useParams();
+  const router = useRouter();
+
   const groupId = params.groupId as string;
 
   return (
@@ -82,9 +80,19 @@ export function ItemsTable({
               {/* Actions */}
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <Button size="sm" onClick={() => onAddPrice(item.id)}>
-                    + Price
-                  </Button>
+                  <AddPriceDialog
+                    itemName={item.name}
+                    onSubmit={async (values) => {
+                      await createPriceRecord({
+                        itemId: item.id,
+                        price: values.price,
+                      });
+
+                      router.refresh();
+                    }}
+                  >
+                    <Button size="sm">+ Price</Button>
+                  </AddPriceDialog>
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

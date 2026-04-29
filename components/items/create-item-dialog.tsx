@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { NumericFormat } from "react-number-format";
+import { CirclePlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,16 +11,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatPriceToUnit } from "@/lib/utiles/format";
-import { CircleDollarSign, DollarSign } from "lucide-react";
+import { formatPriceToUnit } from "@/lib/utils/format";
 import { cn } from "@/lib/utils";
 
 type CreateItemDialogProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   onSubmit: (values: {
     name: string;
     category?: string;
@@ -27,17 +26,21 @@ type CreateItemDialogProps = {
   }) => Promise<void>;
 };
 
-export function CreateItemDialog({
-  open,
-  onOpenChange,
-  onSubmit,
-}: CreateItemDialogProps) {
+export function CreateItemDialog({ onSubmit }: CreateItemDialogProps) {
+  const [open, setOpen] = useState(false);
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit() {
+  const resetForm = () => {
+    setName("");
+    setCategory("");
+    setPrice("");
+  };
+
+  const handleSubmit = async () => {
     if (!name.trim()) return;
 
     const parsedPrice = Number(price);
@@ -51,26 +54,27 @@ export function CreateItemDialog({
     });
 
     setLoading(false);
-
-    // reset
-    setName("");
-    setCategory("");
-    setPrice("");
-    onOpenChange(false);
-  }
+    resetForm();
+    setOpen(false);
+  };
 
   return (
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
         if (!nextOpen) {
-          setName("");
-          setCategory("");
-          setPrice("");
+          resetForm();
         }
-        onOpenChange(nextOpen);
+        setOpen(nextOpen);
       }}
     >
+      <DialogTrigger asChild>
+        <Button>
+          <CirclePlus className="size-4" />
+          Create Item
+        </Button>
+      </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Item</DialogTitle>
@@ -111,14 +115,14 @@ export function CreateItemDialog({
           />
 
           {price && (
-            <p className="text-md text-muted-foreground flex items-center">
+            <p className="flex items-center text-md text-muted-foreground">
               = {formatPriceToUnit(price)}
             </p>
           )}
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={loading}>
