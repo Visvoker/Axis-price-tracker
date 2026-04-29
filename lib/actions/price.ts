@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
+import { getItemWithPrices } from "../queries/item";
 
 export async function createPriceRecord({
   itemId,
@@ -23,4 +24,8 @@ export async function createPriceRecord({
       createdById: session.user.id,
     },
   });
+}
+
+export async function getItemWithPricesAction(itemId: string, groupId: string) {
+  return getItemWithPrices(itemId, groupId);
 }

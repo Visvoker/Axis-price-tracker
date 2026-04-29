@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/db";
 import ItemDetailClient from "@/components/dashboard/items/item-detail-client";
+import { getItemWithPrices } from "@/lib/queries/item";
 
 export default async function ItemDetailPage({
   params,
@@ -8,19 +8,7 @@ export default async function ItemDetailPage({
 }) {
   const { groupId, itemId } = await params;
 
-  const item = await prisma.item.findFirst({
-    where: { id: itemId, groupId },
-    include: {
-      prices: {
-        orderBy: { createdAt: "desc" },
-        include: {
-          createdBy: true,
-        },
-      },
-    },
-  });
-
-  // console.log("item:", item);
+  const item = await getItemWithPrices(itemId, groupId);
 
   if (!item) return <div>Item not found</div>;
 
@@ -35,7 +23,7 @@ export default async function ItemDetailPage({
         prices: item.prices.map((price) => ({
           id: price.id,
           price: Number(price.price),
-          createdAt: price.createdAt.toISOString(),
+          createdAt: price.createdAt,
           createdBy: { name: price.createdBy.name },
         })),
       }}
