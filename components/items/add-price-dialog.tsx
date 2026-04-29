@@ -51,7 +51,7 @@ export function AddPriceDialog({
         onOpenChange(nextOpen);
       }}
     >
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-w-sm sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add Price Record</DialogTitle>
           <DialogDescription>{itemName}</DialogDescription>
