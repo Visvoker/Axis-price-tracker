@@ -136,23 +136,21 @@ export function PriceRecordsClient({
                 {selectedItemData.name}
               </CardTitle>
 
-              <Button size="sm" onClick={() => setAddPriceOpen(true)}>
-                +
-              </Button>
+              <div>
+                <AddPriceDialog
+                  itemName={selectedItemData.name}
+                  onSubmit={async (values) => {
+                    await createPriceRecord({
+                      itemId: selectedItemData.id,
+                      price: values.price,
+                    });
 
-              <AddPriceDialog
-                open={addPriceOpen}
-                onOpenChange={setAddPriceOpen}
-                itemName={selectedItemData.name}
-                onSubmit={async (values) => {
-                  await createPriceRecord({
-                    itemId: selectedItemData.id,
-                    price: values.price,
-                  });
-
-                  router.refresh();
-                }}
-              />
+                    router.refresh();
+                  }}
+                >
+                  <Button size="sm">+</Button>
+                </AddPriceDialog>
+              </div>
             </CardHeader>
             <CardContent>
               <PriceChart
