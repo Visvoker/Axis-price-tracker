@@ -26,6 +26,7 @@ type ItemOption = {
 type PriceRecordsClientProps = {
   groupId: string;
   items: ItemOption[];
+  initialSelectedItem: SelectedItemData | null;
 };
 
 type SelectedItemData = {
@@ -43,14 +44,15 @@ type SelectedItemData = {
 export function PriceRecordsClient({
   groupId,
   items,
+  initialSelectedItem,
 }: PriceRecordsClientProps) {
   const router = useRouter();
 
   const [keyword, setKeyword] = useState("");
   const [selectedItemData, setSelectedItemData] =
-    useState<SelectedItemData | null>(null);
+    useState<SelectedItemData | null>(initialSelectedItem);
+  const [recentItems, setRecentItems] = useState<ItemOption[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [addPriceOpen, setAddPriceOpen] = useState(false);
 
   const filteredItems = useMemo(() => {
     const value = keyword.trim().toLowerCase();
@@ -60,13 +62,29 @@ export function PriceRecordsClient({
     return items.filter((item) => item.name.toLowerCase().includes(value));
   }, [items, keyword]);
 
-  async function handleSelectItem(itemId: string) {
+  async function handleSelectItem(item: ItemOption) {
+    setKeyword("");
+
+    router.push(`/${groupId}/price-records?itemId=${item.id}`);
+
+    setRecentItems((prev) => {
+      const filtered = prev.filter((i) => i.id !== item.id);
+      return [item, ...filtered].slice(0, 5);
+    });
+
     setIsLoading(true);
 
-    const data = await getItemWithPricesAction(itemId, groupId);
+    const data = await getItemWithPricesAction(item.id, groupId);
 
     setSelectedItemData(data);
     setIsLoading(false);
+  }
+
+  async function refreshSelectedItem() {
+    if (!selectedItemData) return;
+
+    const data = await getItemWithPricesAction(selectedItemData.id, groupId);
+    setSelectedItemData(data);
   }
 
   return (
@@ -77,11 +95,11 @@ export function PriceRecordsClient({
           Search an item to view its price trends and history.
         </p>
       </div>
-      <Card>
+      <Card className="overflow-visible">
         <CardHeader>
           <CardTitle>Search Item</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-2">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -90,29 +108,42 @@ export function PriceRecordsClient({
               placeholder="Search item name..."
               className="pl-9"
             />
+            {filteredItems.length > 0 && (
+              <div className="absolute top-full left-0 z-50 mt-1 w-full rounded-md border bg-background shadow">
+                {filteredItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelectItem(item)}
+                    className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-muted"
+                  >
+                    <span className="font-medium">{item.name}</span>
+                    <span className="text-muted-foreground">
+                      {item.category ?? "No category"}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-
-          {filteredItems.length > 0 && (
-            <div className="absolute z-10 mt-1 relative max-w-md rounded-md border bg-background shadow">
-              {filteredItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    handleSelectItem(item.id);
-                    setKeyword("");
-                  }}
-                  className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-muted"
-                >
-                  <span className="font-medium">{item.name}</span>
-                  <span className="text-muted-foreground">
-                    {item.category ?? "No category"}
-                  </span>
-                </button>
-              ))}
+          {recentItems.length > 0 && (
+            <div>
+              <div className="flex flex-wrap gap-2">
+                {recentItems.map((item) => (
+                  <Button
+                    key={item.id}
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => handleSelectItem(item)}
+                  >
+                    {item.name}
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
         </CardContent>
       </Card>
+
       {isLoading ? (
         <Card>
           <CardContent className="flex min-h-64 items-center justify-center text-sm text-muted-foreground">
@@ -145,7 +176,7 @@ export function PriceRecordsClient({
                       price: values.price,
                     });
 
-                    router.refresh();
+                    await refreshSelectedItem();
                   }}
                 >
                   <Button size="sm">+</Button>
