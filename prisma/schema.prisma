@@ -7,11 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum GroupType {
-  PERSONAL
-  GUILD
-}
-
 enum GroupRole {
   ADMIN
   MEMBER
@@ -29,21 +24,26 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  memberships  GroupMember[]
-  priceRecords PriceRecord[] @relation("PriceRecordCreatedBy")
+  memberships    GroupMember[]
+  ownedGroups    Group[]       @relation("GroupOwner")
+  priceRecords   PriceRecord[] @relation("PriceRecordCreatedBy")
+  createdInvites GroupInvite[] @relation("GroupInviteCreatedBy")
 }
 
 model Group {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   name       String
-  type       GroupType
-  inviteCode String?   @unique
-  maxMembers Int       @default(10)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  maxMembers Int      @default(10)
+  ownerId    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
+  owner   User?         @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: SetNull)
   members GroupMember[]
+  invites GroupInvite[]
   items   Item[]
+
+  @@index([ownerId])
 }
 
 model GroupMember {
@@ -58,6 +58,21 @@ model GroupMember {
 
   @@unique([userId, groupId])
   @@index([groupId])
+}
+
+model GroupInvite {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  groupId     String
+  createdById String?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  group     Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdBy User? @relation("GroupInviteCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([groupId])
+  @@index([createdById])
 }
 
 model Item {

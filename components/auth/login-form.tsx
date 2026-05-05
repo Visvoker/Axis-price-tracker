@@ -13,8 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm() {
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/select-group";
+
   return (
     <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-sm">
@@ -61,9 +66,16 @@ export function LoginForm() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/select-group" })}
+            onClick={() => signIn("google", { callbackUrl })}
           >
             Login with Google
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("discord", { callbackUrl })}
+          >
+            Login with Discord
           </Button>
         </CardFooter>
       </Card>

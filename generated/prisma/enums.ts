@@ -9,14 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const GroupType = {
-  PERSONAL: 'PERSONAL',
-  GUILD: 'GUILD'
-} as const
-
-export type GroupType = (typeof GroupType)[keyof typeof GroupType]
-
-
 export const GroupRole = {
   ADMIN: 'ADMIN',
   MEMBER: 'MEMBER'

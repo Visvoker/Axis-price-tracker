@@ -387,6 +387,7 @@ export const ModelName = {
   User: 'User',
   Group: 'Group',
   GroupMember: 'GroupMember',
+  GroupInvite: 'GroupInvite',
   Item: 'Item',
   PriceRecord: 'PriceRecord',
   Account: 'Account',
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "group" | "groupMember" | "item" | "priceRecord" | "account" | "session" | "verificationToken"
+    modelProps: "user" | "group" | "groupMember" | "groupInvite" | "item" | "priceRecord" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -630,6 +631,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.GroupMemberCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.GroupMemberCountAggregateOutputType> | number
+        }
+      }
+    }
+    GroupInvite: {
+      payload: Prisma.$GroupInvitePayload<ExtArgs>
+      fields: Prisma.GroupInviteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GroupInviteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GroupInviteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        findFirst: {
+          args: Prisma.GroupInviteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GroupInviteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        findMany: {
+          args: Prisma.GroupInviteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>[]
+        }
+        create: {
+          args: Prisma.GroupInviteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        createMany: {
+          args: Prisma.GroupInviteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GroupInviteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>[]
+        }
+        delete: {
+          args: Prisma.GroupInviteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        update: {
+          args: Prisma.GroupInviteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        deleteMany: {
+          args: Prisma.GroupInviteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GroupInviteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GroupInviteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>[]
+        }
+        upsert: {
+          args: Prisma.GroupInviteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupInvitePayload>
+        }
+        aggregate: {
+          args: Prisma.GroupInviteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGroupInvite>
+        }
+        groupBy: {
+          args: Prisma.GroupInviteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GroupInviteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GroupInviteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GroupInviteCountAggregateOutputType> | number
         }
       }
     }
@@ -1058,9 +1133,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const GroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  type: 'type',
-  inviteCode: 'inviteCode',
   maxMembers: 'maxMembers',
+  ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1077,6 +1151,18 @@ export const GroupMemberScalarFieldEnum = {
 } as const
 
 export type GroupMemberScalarFieldEnum = (typeof GroupMemberScalarFieldEnum)[keyof typeof GroupMemberScalarFieldEnum]
+
+
+export const GroupInviteScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  groupId: 'groupId',
+  createdById: 'createdById',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type GroupInviteScalarFieldEnum = (typeof GroupInviteScalarFieldEnum)[keyof typeof GroupInviteScalarFieldEnum]
 
 
 export const ItemScalarFieldEnum = {
@@ -1197,20 +1283,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
- * Reference to a field of type 'GroupType'
- */
-export type EnumGroupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupType'>
-    
-
-
-/**
- * Reference to a field of type 'GroupType[]'
- */
-export type ListEnumGroupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupType[]'>
     
 
 
@@ -1367,6 +1439,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   group?: Prisma.GroupOmit
   groupMember?: Prisma.GroupMemberOmit
+  groupInvite?: Prisma.GroupInviteOmit
   item?: Prisma.ItemOmit
   priceRecord?: Prisma.PriceRecordOmit
   account?: Prisma.AccountOmit
