@@ -13,7 +13,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default async function SelectGroupPage() {
+type Props = {
+  searchParams: Promise<{
+    callbackUrl?: string;
+  }>;
+};
+
+export default async function SelectGroupPage({ searchParams }: Props) {
+  const { callbackUrl } = await searchParams;
+
   const session = await auth();
 
   console.log("session:", session);
@@ -24,7 +32,7 @@ export default async function SelectGroupPage() {
 
   const membership = await getFirstGroupByUserId(session.user.id);
 
-  if (membership?.group.id) {
+  if (!callbackUrl && membership?.group.id) {
     redirect(`/${membership.group.id}`);
   }
 
@@ -34,7 +42,9 @@ export default async function SelectGroupPage() {
         <form action={createGroup}>
           <div className="space-y-6">
             <CardHeader>
-              <CardTitle>建立你的第一個 Group</CardTitle>
+              <CardTitle className="flex items-center justify-between">
+                建立你的第一個 Group
+              </CardTitle>
               <CardDescription>
                 先建立一個 group 就能與夥伴們一起記錄道具價格
               </CardDescription>
@@ -49,9 +59,11 @@ export default async function SelectGroupPage() {
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">
-                建立
-              </Button>
+              <div>
+                <Button type="submit" className="w-full">
+                  建立
+                </Button>
+              </div>
             </CardContent>
           </div>
         </form>

@@ -30,7 +30,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-muted">
+    <div className="flex h-screen overflow-hidden bg-muted">
       <div className="hidden md:flex">
         <Sidebar
           groupId={membership.group.id}
@@ -50,7 +50,9 @@ export default async function DashboardLayout({
           name={session.user.name}
           image={session.user.image}
         />
-        <PageContainer>{children}</PageContainer>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <PageContainer>{children}</PageContainer>
+        </div>
       </main>
     </div>
   );

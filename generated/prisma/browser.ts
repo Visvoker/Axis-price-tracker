@@ -33,6 +33,11 @@ export type Group = Prisma.GroupModel
  */
 export type GroupMember = Prisma.GroupMemberModel
 /**
+ * Model GroupInvite
+ * 
+ */
+export type GroupInvite = Prisma.GroupInviteModel
+/**
  * Model Item
  * 
  */
