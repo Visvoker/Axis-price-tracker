@@ -2,17 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Package,
-  Users,
-  Settings,
-  BadgeDollarSign,
-} from "lucide-react";
+import { Home, Package, Users, Settings, BadgeDollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
-  dashboard: LayoutDashboard,
+  Home: Home,
   package: Package,
   users: Users,
   settings: Settings,

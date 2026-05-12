@@ -39,3 +39,24 @@ export async function getItemWithPrices(itemId: string, groupId: string) {
     })),
   };
 }
+
+export async function getRecentActivityItemsByGroupId(groupId: string) {
+  return prisma.item.findMany({
+    where: { groupId },
+    include: {
+      prices: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 2,
+        include: {
+          createdBy: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 8,
+  });
+}

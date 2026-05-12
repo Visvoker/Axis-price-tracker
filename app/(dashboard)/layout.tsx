@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import { PageContainer } from "@/components/dashboard/page-container";
-import { Topbar } from "@/components/dashboard/topbar";
+import { PageContainer } from "@/components/home/page-container";
+import { Topbar } from "@/components/home/topbar";
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { getGroupWithMembership } from "@/lib/queries/group";
 import { redirect } from "next/navigation";
@@ -30,7 +30,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-muted">
+    <div className="flex h-full overflow-hidden bg-muted">
       <div className="hidden md:flex">
         <Sidebar
           groupId={membership.group.id}
@@ -41,7 +41,7 @@ export default async function DashboardLayout({
           image={session.user.image}
         />
       </div>
-      <main className="flex min-w-0 flex-1 flex-col rounded-lg bg-background md:overflow-hidden md:m-2">
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col rounded-lg bg-background md:m-2 md:overflow-hidden ">
         <Topbar
           groupId={membership.group.id}
           groupName={membership.group.name}
@@ -50,7 +50,7 @@ export default async function DashboardLayout({
           name={session.user.name}
           image={session.user.image}
         />
-        <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hiddens px-3 pb-3 md:px-6">
           <PageContainer>{children}</PageContainer>
         </div>
       </main>

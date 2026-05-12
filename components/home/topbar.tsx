@@ -19,7 +19,7 @@ export function Topbar(props: TopbarProps) {
   const router = useRouter();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-background px-6">
+    <header className="flex h-16 items-center justify-between border-b bg-background px-3 ">
       <div className="min-w-0">
         <MobileSidebar {...props} />
         <p className="truncate text-sm font-medium text-foreground hidden md:block">
