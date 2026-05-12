@@ -88,14 +88,15 @@ export function PriceRecordsClient({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-y-auto pt-3">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Price Records</h1>
         <p className="text-sm text-muted-foreground">
           Search an item to view its price trends and history.
         </p>
       </div>
-      <Card className="overflow-visible">
+
+      <Card className="ring-0 border overflow-visible">
         <CardHeader>
           <CardTitle>Search Item</CardTitle>
         </CardHeader>
@@ -151,7 +152,7 @@ export function PriceRecordsClient({
           </CardContent>
         </Card>
       ) : !selectedItemData ? (
-        <Card>
+        <Card className="ring-0 border">
           <CardContent className="flex min-h-64 flex-col items-center justify-center text-center">
             <p className="text-sm font-medium">No item selected</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -160,8 +161,8 @@ export function PriceRecordsClient({
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-6">
-          <Card>
+        <div className="space-y-6 ">
+          <Card className="ring-0 border">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-2xl">
                 {selectedItemData.name}

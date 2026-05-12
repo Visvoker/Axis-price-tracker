@@ -24,9 +24,7 @@ export function ItemsPageClient({ items }: { items: Item[] }) {
   const selectedItem = items.find((item) => item.id === selectedItemId);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end"></div>
-
+    <div className="space-y-6 pt-2 min-h-0 overflow-y-auto">
       <ItemsToolbar
         view={view}
         onViewChange={setView}

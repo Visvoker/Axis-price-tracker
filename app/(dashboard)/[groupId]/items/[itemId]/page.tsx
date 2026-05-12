@@ -1,4 +1,4 @@
-import ItemDetailClient from "@/components/dashboard/items/item-detail-client";
+import ItemDetailClient from "@/components/home/items/item-detail-client";
 import { getItemWithPrices } from "@/lib/queries/item";
 
 export default async function ItemDetailPage({

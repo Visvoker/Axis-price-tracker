@@ -1,4 +1,4 @@
-import { ItemsPageClient } from "@/components/dashboard/items/items-page-client";
+import { ItemsPageClient } from "@/components/home/items/items-page-client";
 import { prisma } from "@/lib/db";
 
 export default async function ItemsPage() {

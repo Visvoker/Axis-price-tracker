@@ -20,9 +20,9 @@ export function SidebarContent({
 }: SidebarContentProps) {
   const navItems: NavItem[] = [
     {
-      title: "Dashboard",
+      title: "Home",
       href: `/${groupId}`,
-      icon: "dashboard",
+      icon: "Home",
     },
     {
       title: "Items",
@@ -51,7 +51,7 @@ export function SidebarContent({
   });
 
   return (
-    <aside className="flex h-screen w-60 flex-col justify-between px-4 py-5 md:bg-muted">
+    <aside className="flex h-screen w-60 flex-col justify-between px-3 py-5 md:bg-muted">
       <div className="space-y-6">
         <div className="px-2">
           <h1 className="text-xl font-semibold tracking-tight">
