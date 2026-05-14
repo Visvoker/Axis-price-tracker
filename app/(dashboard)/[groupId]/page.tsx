@@ -1,25 +1,25 @@
 import { ActivitySection } from "@/components/home/activity-section";
 import { MembersSection } from "@/components/home/members-section";
-import { TrendingItemSection } from "@/components/home/trending-item-section";
+import { TopMoversSection } from "@/components/home/top-movers-section";
 
 type HomePageProps = {
-  params: {
+  params: Promise<{
     groupId: string;
-  };
+  }>;
 };
 
-export default function HomePage({ params }: HomePageProps) {
-  const { groupId } = params;
+export default async function HomePage({ params }: HomePageProps) {
+  const { groupId } = await params;
 
   return (
-    <main className="flex h-full min-h-0 flex-col pt-3">
-      <section className="grid min-h-0 flex-1 gap-6 grid-rows-[minmax(225px,3fr)_minmax(145px,2fr)]">
+    <main className="flex h-full min-h-0 flex-col pt-6">
+      <section className="grid min-h-0 flex-1 gap-6">
         <div className="min-h-0">
           <ActivitySection groupId={groupId} />
         </div>
 
         <div className="grid min-h-0 gap-6 md:grid-cols-2">
-          <TrendingItemSection />
+          <TopMoversSection groupId={groupId} />
           <MembersSection />
         </div>
       </section>
