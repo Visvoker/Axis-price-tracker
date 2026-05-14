@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { ItemsTable } from "@/components/items/items-table";
-import { AddPriceDialog } from "@/components/items/add-price-dialog";
 
-import { createPriceRecord } from "@/lib/actions/price";
 import { ItemsToolbar } from "./items-toolbar";
 
 type Item = {
@@ -19,9 +16,6 @@ type Item = {
 export function ItemsPageClient({ items }: { items: Item[] }) {
   const [view, setView] = useState<"table" | "card">("table");
   const [search, setSearch] = useState("");
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
-  const selectedItem = items.find((item) => item.id === selectedItemId);
 
   return (
     <div className="space-y-6 pt-2 min-h-0 overflow-y-auto">

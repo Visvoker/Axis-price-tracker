@@ -11,9 +11,6 @@ type ActivitySectionProps = {
 export async function ActivitySection({ groupId }: ActivitySectionProps) {
   const records = await getRecentActivitiesByGroupId(groupId);
 
-  console.log(records);
-  console.log("groupId:", groupId);
-
   return (
     <Card className="flex flex-col h-full ring-0 shadow-none bg-background border py-0">
       <CardContent className="min-h-0 flex-1 overflow-y-auto px-0 divide-y p-0">

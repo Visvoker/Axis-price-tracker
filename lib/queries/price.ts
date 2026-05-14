@@ -1,6 +1,6 @@
 import { prisma } from "../db";
 
-export async function getTopMoversByGroupId(groupId: string) {
+export async function getTopMoversByGroupId(groupId: string, days: number) {
   if (!groupId) {
     throw new Error("groupId is required");
   }
@@ -27,15 +27,15 @@ export async function getTopMoversByGroupId(groupId: string) {
 
   const movers = await Promise.all(
     uniqueRecords.map(async (record) => {
-      const startOfDay = new Date(record.createdAt);
+      const baselineDate = new Date(record.createdAt);
 
-      startOfDay.setHours(0, 0, 0, 0);
+      baselineDate.setDate(baselineDate.getDate() - days);
 
       const baselineRecord = await prisma.priceRecord.findFirst({
         where: {
           itemId: record.itemId,
           createdAt: {
-            lt: startOfDay,
+            lt: baselineDate,
           },
         },
         orderBy: {
@@ -77,4 +77,29 @@ export async function getTopMoversByGroupId(groupId: string) {
       .sort((a, b) => a.changePercent! - b.changePercent!)
       .slice(0, 5),
   };
+}
+
+export async function getTrendingItemsByGroupId(groupId: string) {
+  if (!groupId) {
+    throw new Error("groupId is required");
+  }
+
+  return prisma.item.findMany({
+    where: {
+      groupId,
+    },
+    include: {
+      _count: {
+        select: {
+          prices: true,
+        },
+      },
+    },
+    orderBy: {
+      prices: {
+        _count: "desc",
+      },
+    },
+    take: 5,
+  });
 }

@@ -12,7 +12,7 @@ export default async function ItemsPage() {
       },
     },
     orderBy: {
-      createdAt: "desc",
+      updatedAt: "desc",
     },
   });
 
@@ -24,7 +24,7 @@ export default async function ItemsPage() {
         latestPrice: item.prices[0]?.price
           ? Number(item.prices[0].price)
           : null,
-        updatedAt: item.updatedAt.toLocaleString(),
+        updatedAt: item.prices[0].createdAt.toLocaleString(),
       }))}
     />
   );
