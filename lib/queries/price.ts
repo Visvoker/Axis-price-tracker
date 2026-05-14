@@ -78,3 +78,28 @@ export async function getTopMoversByGroupId(groupId: string, days: number) {
       .slice(0, 5),
   };
 }
+
+export async function getTrendingItemsByGroupId(groupId: string) {
+  if (!groupId) {
+    throw new Error("groupId is required");
+  }
+
+  return prisma.item.findMany({
+    where: {
+      groupId,
+    },
+    include: {
+      _count: {
+        select: {
+          prices: true,
+        },
+      },
+    },
+    orderBy: {
+      prices: {
+        _count: "desc",
+      },
+    },
+    take: 5,
+  });
+}

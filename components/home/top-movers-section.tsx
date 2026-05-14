@@ -6,7 +6,7 @@ type TopMoversSectionProps = {
 };
 
 export async function TopMoversSection({ groupId }: TopMoversSectionProps) {
-  const movers = await getTopMoversByGroupId(groupId, 7);
+  const movers = await getTopMoversByGroupId(groupId, 3);
 
   return <TopMoversTabs groupId={groupId} movers={movers} />;
 }

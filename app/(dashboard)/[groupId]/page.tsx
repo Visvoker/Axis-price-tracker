@@ -1,6 +1,7 @@
 import { ActivitySection } from "@/components/home/activity-section";
-import { MembersSection } from "@/components/home/members-section";
+
 import { TopMoversSection } from "@/components/home/top-movers-section";
+import { TrendingItemsSection } from "@/components/home/trending-items-section";
 
 type HomePageProps = {
   params: Promise<{
@@ -20,7 +21,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
         <div className="grid min-h-0 gap-6 md:grid-cols-2">
           <TopMoversSection groupId={groupId} />
-          <MembersSection />
+          <TrendingItemsSection groupId={groupId} />
         </div>
       </section>
     </main>
