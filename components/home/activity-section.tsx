@@ -1,53 +1,60 @@
 import { cn } from "@/lib/utils";
-import { getRecentActivityItemsByGroupId } from "@/lib/queries/item";
+import { getRecentActivitiesByGroupId } from "@/lib/queries/item";
 
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 type ActivitySectionProps = {
   groupId: string;
 };
 
 export async function ActivitySection({ groupId }: ActivitySectionProps) {
-  const items = await getRecentActivityItemsByGroupId(groupId);
+  const records = await getRecentActivitiesByGroupId(groupId);
 
-  console.log(items);
+  console.log(records);
+  console.log("groupId:", groupId);
 
   return (
-    <Card className="flex flex-col h-full ring-0 shadow-none bg-background border-1 py-0">
+    <Card className="flex flex-col h-full ring-0 shadow-none bg-background border py-0">
       <CardContent className="min-h-0 flex-1 overflow-y-auto px-0 divide-y p-0">
-        {items.map((item) => {
-          const latest = item.prices[0];
-          const previous = item.prices[1];
+        {records.map((record) => {
+          const latestPrice = Number(record.price);
 
-          const latestPrice = Number(latest?.price ?? 0);
-          const previousPrice = Number(previous?.price ?? 0);
+          const baselinePrice = record.baselinePrice ?? 0;
 
           const changePercent =
-            previousPrice > 0
-              ? ((latestPrice - previousPrice) / previousPrice) * 100
-              : 0;
+            baselinePrice > 0
+              ? ((latestPrice - baselinePrice) / baselinePrice) * 100
+              : null;
 
-          const isUp = changePercent > 0;
-          const isDown = changePercent < 0;
+          const hasChange = changePercent !== null;
+
+          const isUp = hasChange && changePercent > 0;
+          const isDown = hasChange && changePercent < 0;
+
           return (
             <div
-              key={item.id}
+              key={record.item.id}
               className="flex items-center justify-between p-3"
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <p className="font-medium">{item.name}</p>
+                  <p className="font-medium">
+                    <Link href={`/${groupId}/items/${record.item.id}`}>
+                      {record.item.name}
+                    </Link>
+                  </p>
 
-                  {item.category && (
+                  {record.item.category && (
                     <span className="text-xs text-muted-foreground">
-                      {item.category}
+                      {record.item.category}
                     </span>
                   )}
                 </div>
 
                 <p className="text-sm text-muted-foreground">
-                  {latest?.createdBy.name ?? "Unknown"} ·{" "}
-                  {latest?.createdAt.toLocaleString("zh-TW")}
+                  {record.createdBy.name ?? "Unknown"} ·{" "}
+                  {record.createdAt.toLocaleString("zh-TW")}
                 </p>
               </div>
 
@@ -57,13 +64,19 @@ export async function ActivitySection({ groupId }: ActivitySectionProps) {
                 <p
                   className={cn(
                     "text-sm font-medium",
-                    isUp && "text-emerald-500",
-                    isDown && "text-red-500",
+                    isUp && "text-red-500",
+                    isDown && "text-emerald-500",
                     !isUp && !isDown && "text-muted-foreground",
                   )}
                 >
-                  {changePercent > 0 && "+"}
-                  {changePercent.toFixed(1)}%
+                  {hasChange ? (
+                    <>
+                      {changePercent > 0 && "+"}
+                      {changePercent.toFixed(1)}%
+                    </>
+                  ) : (
+                    " "
+                  )}
                 </p>
               </div>
             </div>

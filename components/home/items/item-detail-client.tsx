@@ -38,11 +38,24 @@ export default function ItemDetailClient({ item }: ItemDetailClientProps) {
   }));
 
   return (
-    <div className="space-y-6 items-center ">
+    <div className="space-y-6 items-center pt-3">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">{item.name}</h1>
-        <Button onClick={() => setAddPriceOpen(true)}>+ Add Price</Button>
+
+        <AddPriceDialog
+          itemName={item.name}
+          onSubmit={async (values) => {
+            await createPriceRecord({
+              itemId: item.id,
+              price: values.price,
+            });
+
+            router.refresh();
+          }}
+        >
+          <Button size="sm">+ Add Price</Button>
+        </AddPriceDialog>
       </div>
 
       <div className="space-y-2 rounded-xl border p-4 ">
@@ -57,20 +70,6 @@ export default function ItemDetailClient({ item }: ItemDetailClientProps) {
       <PriceChart data={chartData} />
 
       <PriceHistoryTable prices={item.prices} />
-
-      <AddPriceDialog
-        open={addPriceOpen}
-        onOpenChange={setAddPriceOpen}
-        itemName={item.name}
-        onSubmit={async (values) => {
-          await createPriceRecord({
-            itemId: item.id,
-            price: values.price,
-          });
-
-          router.refresh();
-        }}
-      />
     </div>
   );
 }

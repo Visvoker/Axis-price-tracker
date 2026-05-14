@@ -40,23 +40,52 @@ export async function getItemWithPrices(itemId: string, groupId: string) {
   };
 }
 
-export async function getRecentActivityItemsByGroupId(groupId: string) {
-  return prisma.item.findMany({
-    where: { groupId },
+export async function getRecentActivitiesByGroupId(groupId: string) {
+  if (!groupId) {
+    throw new Error("groupId is required");
+  }
+
+  const records = await prisma.priceRecord.findMany({
+    where: { item: { groupId } },
     include: {
-      prices: {
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 2,
-        include: {
-          createdBy: true,
-        },
-      },
+      item: true,
+      createdBy: true,
     },
     orderBy: {
       createdAt: "desc",
     },
-    take: 8,
+    take: 30,
   });
+
+  const uniqueRecords = records.filter(
+    (record, index, self) =>
+      index === self.findIndex((r) => r.itemId === record.itemId),
+  );
+
+  const activities = await Promise.all(
+    uniqueRecords.slice(0, 8).map(async (record) => {
+      const startOfDay = new Date(record.createdAt);
+
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const baselineRecord = await prisma.priceRecord.findFirst({
+        where: {
+          itemId: record.itemId,
+          createdAt: {
+            lt: startOfDay,
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return {
+        ...record,
+        baselinePrice: baselineRecord ? Number(baselineRecord.price) : null,
+      };
+    }),
+  );
+
+  return activities;
 }
