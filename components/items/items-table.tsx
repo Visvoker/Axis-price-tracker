@@ -32,9 +32,15 @@ type ItemsTableProps = {
   items: Item[];
   onEdit: (itemId: string) => void;
   onDelete: (itemId: string) => void;
+  onAddPrice: (itemId: string) => void;
 };
 
-export function ItemsTable({ items, onDelete, onEdit }: ItemsTableProps) {
+export function ItemsTable({
+  items,
+  onDelete,
+  onEdit,
+  onAddPrice,
+}: ItemsTableProps) {
   const params = useParams();
   const router = useRouter();
 
@@ -80,19 +86,9 @@ export function ItemsTable({ items, onDelete, onEdit }: ItemsTableProps) {
               {/* Actions */}
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <AddPriceDialog
-                    itemName={item.name}
-                    onSubmit={async (values) => {
-                      await createPriceRecord({
-                        itemId: item.id,
-                        price: values.price,
-                      });
-
-                      router.refresh();
-                    }}
-                  >
-                    <Button size="sm">+ Price</Button>
-                  </AddPriceDialog>
+                  <Button size="sm" onClick={() => onAddPrice(item.id)}>
+                    + Price
+                  </Button>
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

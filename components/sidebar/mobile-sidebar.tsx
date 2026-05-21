@@ -14,7 +14,6 @@ import { SidebarContent } from "@/components/sidebar/sidebar-content";
 type MobileSidebarProps = {
   groupId: string;
   groupName: string;
-  groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;

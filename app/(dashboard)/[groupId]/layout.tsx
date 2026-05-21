@@ -1,29 +1,33 @@
+import { redirect } from "next/navigation";
+
 import { auth } from "@/auth";
-import { PageContainer } from "@/components/home/page-container";
+
 import { Topbar } from "@/components/home/topbar";
 import { Sidebar } from "@/components/sidebar/sidebar";
+import { PageContainer } from "@/components/home/page-container";
+
 import { getGroupWithMembership } from "@/lib/queries/group";
-import { redirect } from "next/navigation";
 
 type DashboardLayoutProp = {
   children: React.ReactNode;
-  params: { groupId: string };
+  params: Promise<{
+    groupId: string;
+  }>;
 };
 
 export default async function DashboardLayout({
   children,
   params,
 }: DashboardLayoutProp) {
+  const { groupId } = await params;
+
   const session = await auth();
 
   if (!session?.user?.id) {
     redirect("/login");
   }
 
-  const membership = await getGroupWithMembership(
-    session.user.id,
-    params.groupId,
-  );
+  const membership = await getGroupWithMembership(session.user.id, groupId);
 
   if (!membership) {
     redirect("/select-group");
@@ -33,9 +37,8 @@ export default async function DashboardLayout({
     <div className="flex h-full overflow-hidden bg-muted">
       <div className="hidden md:flex">
         <Sidebar
-          groupId={membership.group.id}
+          groupId={groupId}
           groupName={membership.group.name}
-          groupType={membership.group.type}
           role={membership.role}
           name={session.user.name}
           image={session.user.image}
@@ -43,9 +46,8 @@ export default async function DashboardLayout({
       </div>
       <main className="min-h-0 min-w-0 flex-1 overflow-y-auto rounded-lg bg-background md:m-2">
         <Topbar
-          groupId={membership.group.id}
+          groupId={groupId}
           groupName={membership.group.name}
-          groupType={membership.group.type}
           role={membership.role}
           name={session.user.name}
           image={session.user.image}

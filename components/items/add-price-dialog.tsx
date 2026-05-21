@@ -18,17 +18,21 @@ import { cn } from "@/lib/utils";
 import { formatPriceToUnit } from "@/lib/utils/format";
 
 type AddPriceDialogProps = {
-  itemName: string;
-  onSubmit: (values: { price: number }) => void;
-  children: React.ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  item: {
+    id: string;
+    name: string;
+  } | null;
+  onSubmit: (values: { itemId: string; price: number }) => Promise<void>;
 };
 
 export function AddPriceDialog({
-  itemName,
+  open,
+  onOpenChange,
+  item,
   onSubmit,
-  children,
 }: AddPriceDialogProps) {
-  const [open, setOpen] = useState(false);
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,6 +41,8 @@ export function AddPriceDialog({
   };
 
   const handleSubmit = async () => {
+    if (!item) return;
+
     const parsedPrice = Number(price);
 
     if (!parsedPrice || parsedPrice <= 0) return;
@@ -44,12 +50,13 @@ export function AddPriceDialog({
     setLoading(true);
 
     await onSubmit({
+      itemId: item.id,
       price: parsedPrice,
     });
 
     setLoading(false);
     resetForm();
-    setOpen(false);
+    onOpenChange(false);
   };
 
   return (
@@ -57,17 +64,16 @@ export function AddPriceDialog({
       open={open}
       onOpenChange={(nextOpen) => {
         if (!nextOpen) {
-          setPrice("");
+          resetForm();
         }
-        setOpen(nextOpen);
+
+        onOpenChange(nextOpen);
       }}
     >
-      <DialogTrigger asChild>{children}</DialogTrigger>
-
       <DialogContent className="max-w-sm sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add Price Record</DialogTitle>
-          <DialogDescription>{itemName}</DialogDescription>
+          <DialogDescription>{item?.name}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2">
@@ -90,10 +96,15 @@ export function AddPriceDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={loading}
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={loading}>
+
+          <Button onClick={handleSubmit} disabled={loading || !price}>
             {loading ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>

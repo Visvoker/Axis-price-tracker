@@ -9,13 +9,13 @@ import { createItem } from "@/lib/actions/item";
 type TopbarProps = {
   groupId: string;
   groupName: string;
-  groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
 };
 
 export function Topbar(props: TopbarProps) {
+  const { groupId } = props;
   const router = useRouter();
 
   return (
@@ -31,6 +31,7 @@ export function Topbar(props: TopbarProps) {
         <CreateItemDialog
           onSubmit={async (values) => {
             await createItem({
+              groupId,
               name: values.name,
               category: values.category,
               price: values.price,
