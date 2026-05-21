@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,14 +38,12 @@ export function EditItemDialog({
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!item) return;
-
-    setName(item.name);
-    setCategory(item.category ?? "");
-  }, [item]);
-
   const resetForm = () => {
+    setName("");
+    setCategory("");
+  };
+
+  const fillForm = () => {
     setName(item?.name ?? "");
     setCategory(item?.category ?? "");
   };
@@ -70,7 +68,9 @@ export function EditItemDialog({
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
+        if (nextOpen) {
+          fillForm();
+        } else {
           resetForm();
         }
 
