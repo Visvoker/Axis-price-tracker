@@ -4,7 +4,6 @@ import { SidebarUser } from "./sidebar-user";
 type SidebarContentProps = {
   groupId: string;
   groupName: string;
-  groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
@@ -13,7 +12,6 @@ type SidebarContentProps = {
 export function SidebarContent({
   groupId,
   groupName,
-  groupType,
   role,
   name,
   image,
@@ -34,21 +32,12 @@ export function SidebarContent({
       href: `/${groupId}/price-records`,
       icon: "badgeDollarSign",
     },
+    {
+      title: "Settings",
+      href: `/${groupId}/settings`,
+      icon: "settings",
+    },
   ];
-
-  if (groupType === "GUILD") {
-    navItems.push({
-      title: "Members",
-      href: `/${groupId}/members`,
-      icon: "users",
-    });
-  }
-
-  navItems.push({
-    title: "Settings",
-    href: `/${groupId}/settings`,
-    icon: "settings",
-  });
 
   return (
     <aside className="flex h-screen w-60 flex-col justify-between px-3 py-5 md:bg-muted">

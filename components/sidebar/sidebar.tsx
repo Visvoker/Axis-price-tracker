@@ -3,7 +3,6 @@ import { SidebarContent } from "./sidebar-content";
 type SidebarProps = {
   groupId: string;
   groupName: string;
-  groupType: "PERSONAL" | "GUILD";
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
@@ -12,7 +11,6 @@ type SidebarProps = {
 export function Sidebar({
   groupId,
   groupName,
-  groupType,
   role,
   name,
   image,
@@ -21,7 +19,6 @@ export function Sidebar({
     <SidebarContent
       groupId={groupId}
       groupName={groupName}
-      groupType={groupType}
       role={role}
       name={name}
       image={image}
