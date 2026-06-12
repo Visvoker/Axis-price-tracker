@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/sidebar/sidebar";
 import { PageContainer } from "@/components/home/page-container";
 
 import { getGroupWithMembership } from "@/lib/queries/group";
+import { getCategoriesByGroupId } from "@/lib/queries/category";
 
 type DashboardLayoutProp = {
   children: React.ReactNode;
@@ -33,6 +34,8 @@ export default async function DashboardLayout({
     redirect("/select-group");
   }
 
+  const categories = await getCategoriesByGroupId(groupId);
+
   return (
     <div className="flex h-full overflow-hidden bg-muted">
       <div className="hidden md:flex">
@@ -51,6 +54,7 @@ export default async function DashboardLayout({
           role={membership.role}
           name={session.user.name}
           image={session.user.image}
+          categories={categories}
         />
         <div className="px-3 pb-3 md:px-6">
           <PageContainer>{children}</PageContainer>

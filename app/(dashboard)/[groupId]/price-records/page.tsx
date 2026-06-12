@@ -1,4 +1,4 @@
-import { PriceRecordsClient } from "@/components/price-records/price-records-client";
+import { PriceRecordsClient } from "@/components/price-records-client";
 import { getItemsByGroupId, getItemWithPrices } from "@/lib/queries/item";
 
 type PriceRecordsPageProps = {

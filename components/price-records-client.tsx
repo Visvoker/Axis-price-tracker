@@ -53,6 +53,7 @@ export function PriceRecordsClient({
     useState<SelectedItemData | null>(initialSelectedItem);
   const [recentItems, setRecentItems] = useState<ItemOption[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [addingPriceOpen, setAddingPriceOpen] = useState(false);
 
   const filteredItems = useMemo(() => {
     const value = keyword.trim().toLowerCase();
@@ -97,9 +98,6 @@ export function PriceRecordsClient({
       </div>
 
       <Card className="ring-0 border overflow-visible">
-        <CardHeader>
-          <CardTitle>Search Item</CardTitle>
-        </CardHeader>
         <CardContent className="space-y-2">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -170,7 +168,9 @@ export function PriceRecordsClient({
 
               <div>
                 <AddPriceDialog
-                  itemName={selectedItemData.name}
+                  open={addingPriceOpen}
+                  onOpenChange={setAddingPriceOpen}
+                  item={selectedItemData}
                   onSubmit={async (values) => {
                     await createPriceRecord({
                       itemId: selectedItemData.id,
@@ -179,9 +179,8 @@ export function PriceRecordsClient({
 
                     await refreshSelectedItem();
                   }}
-                >
-                  <Button size="sm">+</Button>
-                </AddPriceDialog>
+                />
+                <Button onClick={() => setAddingPriceOpen(true)}>+</Button>
               </div>
             </CardHeader>
             <CardContent>

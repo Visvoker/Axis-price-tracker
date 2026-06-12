@@ -18,8 +18,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useParams, useRouter } from "next/navigation";
-import { AddPriceDialog } from "./add-price-dialog";
-import { createPriceRecord } from "@/lib/actions/price";
 
 type Item = {
   id: string;
@@ -51,10 +49,9 @@ export function ItemsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead className="w-[200px]">Name</TableHead>
             <TableHead>Latest Price</TableHead>
             <TableHead>Last Updated</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -79,17 +76,13 @@ export function ItemsTable({
               </TableCell>
 
               {/* Last Updated */}
-              <TableCell className="text-muted-foreground">
+              <TableCell className="text-muted-foreground ">
                 {item.updatedAt}
               </TableCell>
 
               {/* Actions */}
               <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <Button size="sm" onClick={() => onAddPrice(item.id)}>
-                    + Price
-                  </Button>
-
+                <div className="flex items-center justify-end">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button size="icon" variant="ghost">
@@ -98,6 +91,9 @@ export function ItemsTable({
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onAddPrice(item.id)}>
+                        Add
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => onEdit(item.id)}>
                         Edit
                       </DropdownMenuItem>

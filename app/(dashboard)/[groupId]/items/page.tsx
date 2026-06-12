@@ -1,5 +1,6 @@
 import { ItemsPageClient } from "@/components/home/items/items-page-client";
 import { prisma } from "@/lib/db";
+import { getCategoriesByGroupId } from "@/lib/queries/category";
 
 type ItemsPage = {
   params: Promise<{
@@ -21,11 +22,14 @@ export default async function ItemsPage({ params }: ItemsPage) {
         },
         take: 1,
       },
+      category: true,
     },
     orderBy: {
       updatedAt: "desc",
     },
   });
+
+  const categories = await getCategoriesByGroupId(groupId);
 
   return (
     <ItemsPageClient
@@ -37,7 +41,14 @@ export default async function ItemsPage({ params }: ItemsPage) {
           ? Number(item.prices[0].price)
           : null,
         updatedAt: item.prices[0]?.createdAt.toLocaleString("zh-TW") ?? "-",
+        currentCategory: item.category
+          ? {
+              id: item.category.id,
+              name: item.category.name,
+            }
+          : null,
       }))}
+      categoryOptions={categories}
     />
   );
 }

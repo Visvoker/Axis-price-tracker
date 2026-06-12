@@ -6,12 +6,12 @@ import { prisma } from "../db";
 export async function createItem({
   name,
   groupId,
-  category,
+  categoryId,
   price,
 }: {
   name: string;
   groupId: string;
-  category?: string;
+  categoryId?: string;
   price?: number;
 }) {
   const session = await auth();
@@ -41,7 +41,7 @@ export async function createItem({
     const item = await tx.item.create({
       data: {
         name,
-        category,
+        categoryId,
         groupId: membership.groupId,
       },
     });
@@ -64,12 +64,12 @@ export async function updateItem({
   itemId,
   name,
   groupId,
-  category,
+  categoryId,
 }: {
   itemId: string;
   name: string;
   groupId: string;
-  category?: string;
+  categoryId: string;
 }) {
   const session = await auth();
 
@@ -101,13 +101,26 @@ export async function updateItem({
     throw new Error("Item not found");
   }
 
+  if (categoryId) {
+    const category = await prisma.category.findFirst({
+      where: {
+        id: categoryId,
+        groupId,
+      },
+    });
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+  }
+
   return prisma.item.update({
     where: {
       id: itemId,
     },
     data: {
       name,
-      category: category?.trim() || null,
+      categoryId: categoryId || null,
     },
   });
 }

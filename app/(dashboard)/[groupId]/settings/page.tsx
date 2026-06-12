@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
 import { CreateInviteButton } from "@/components/create-invite-button";
+import { getCategoriesByGroupId } from "@/lib/queries/category";
+import { SettingsPageClient } from "@/components/settings-page-client";
 
 type SettingsPageProps = {
   params: Promise<{
@@ -19,8 +21,10 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     },
   });
 
+  const categories = await getCategoriesByGroupId(groupId);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-2">
       <div>
         <h1 className="text-2xl font-semibold">Group Settings</h1>
         <p className="text-muted-foreground">
@@ -42,6 +46,8 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
           </div>
         ))}
       </div>
+
+      <SettingsPageClient categories={categories} groupId={groupId} />
     </div>
   );
 }
