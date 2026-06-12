@@ -57,6 +57,7 @@ export const ModelName = {
   GroupInvite: 'GroupInvite',
   Item: 'Item',
   PriceRecord: 'PriceRecord',
+  Category: 'Category',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -129,7 +130,7 @@ export type GroupInviteScalarFieldEnum = (typeof GroupInviteScalarFieldEnum)[key
 export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  category: 'category',
+  categoryId: 'categoryId',
   note: 'note',
   groupId: 'groupId',
   createdAt: 'createdAt',
@@ -148,6 +149,15 @@ export const PriceRecordScalarFieldEnum = {
 } as const
 
 export type PriceRecordScalarFieldEnum = (typeof PriceRecordScalarFieldEnum)[keyof typeof PriceRecordScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  groupId: 'groupId'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

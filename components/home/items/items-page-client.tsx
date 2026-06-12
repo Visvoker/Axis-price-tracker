@@ -13,19 +13,30 @@ import { DeleteItemDialog } from "@/components/items/delete-item-dialog";
 import { createPriceRecord } from "@/lib/actions/price";
 import { deleteItem, updateItem } from "@/lib/actions/item";
 
+type CategoryOption = {
+  id: string;
+  name: string;
+};
+
 type Item = {
   id: string;
   name: string;
   latestPrice: number | null;
   updatedAt: string;
+  currentCategory: CategoryOption | null;
 };
 
 type ItemsPageClientProps = {
   groupId: string;
   items: Item[];
+  categoryOptions: CategoryOption[];
 };
 
-export function ItemsPageClient({ items, groupId }: ItemsPageClientProps) {
+export function ItemsPageClient({
+  items,
+  groupId,
+  categoryOptions,
+}: ItemsPageClientProps) {
   const [view, setView] = useState<"table" | "card">("table");
   const [search, setSearch] = useState("");
   const [addingPriceItemId, setAddingPriceItemId] = useState<string | null>(
@@ -49,10 +60,6 @@ export function ItemsPageClient({ items, groupId }: ItemsPageClientProps) {
         onViewChange={setView}
         onSearchChange={setSearch}
       />
-
-      <div className="rounded-xl border p-6">
-        view: {view} / search: {search}
-      </div>
 
       <ItemsTable
         items={items}
@@ -79,17 +86,19 @@ export function ItemsPageClient({ items, groupId }: ItemsPageClientProps) {
       />
 
       <EditItemDialog
+        key={editingItem?.id ?? "empty"}
         open={!!editingItemId}
         onOpenChange={(open) => {
           if (!open) setEditingItemId(null);
         }}
         item={editingItem}
+        categoryOptions={categoryOptions}
         onSubmit={async (values) => {
           await updateItem({
             groupId,
             itemId: values.itemId,
             name: values.name,
-            category: values.category,
+            categoryId: values.categoryId,
           });
 
           setEditingItemId(null);

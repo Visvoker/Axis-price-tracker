@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { NumericFormat } from "react-number-format";
 import { cn } from "@/lib/utils";
 import { formatPriceToUnit } from "@/lib/utils/format";
+import toast from "react-hot-toast";
 
 type AddPriceDialogProps = {
   open: boolean;
@@ -54,6 +55,7 @@ export function AddPriceDialog({
       price: parsedPrice,
     });
 
+    toast.success("成功新增價格");
     setLoading(false);
     resetForm();
     onOpenChange(false);

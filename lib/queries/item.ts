@@ -20,6 +20,11 @@ export async function getItemWithPrices(itemId: string, groupId: string) {
           },
         },
       },
+      category: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 
@@ -28,7 +33,7 @@ export async function getItemWithPrices(itemId: string, groupId: string) {
   return {
     id: item.id,
     name: item.name,
-    category: item.category,
+    category: item.category?.name,
     latestPrice: item.prices[0] ? Number(item.prices[0].price) : null,
     totalRecords: item.prices.length,
     prices: item.prices.map((price) => ({

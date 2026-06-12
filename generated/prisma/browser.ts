@@ -48,6 +48,11 @@ export type Item = Prisma.ItemModel
  */
 export type PriceRecord = Prisma.PriceRecordModel
 /**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
  * Model Account
  * 
  */

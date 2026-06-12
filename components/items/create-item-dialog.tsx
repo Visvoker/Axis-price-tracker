@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { NumericFormat } from "react-number-format";
+import toast from "react-hot-toast";
 import { CirclePlus } from "lucide-react";
+import { NumericFormat } from "react-number-format";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +16,18 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/select";
 
 import { cn } from "@/lib/utils";
 import { formatPriceToUnit } from "@/lib/utils/format";
+import { createCategory } from "@/lib/actions/category";
 
 type CreateItemDialogProps = {
+  groupId: string;
+  categories: {
+    id: string;
+    name: string;
+  }[];
   onSubmit: (values: {
     name: string;
     category?: string;
@@ -27,13 +35,19 @@ type CreateItemDialogProps = {
   }) => Promise<void>;
 };
 
-export function CreateItemDialog({ onSubmit }: CreateItemDialogProps) {
+export function CreateItemDialog({
+  onSubmit,
+  groupId,
+  categories,
+}: CreateItemDialogProps) {
   const [open, setOpen] = useState(false);
 
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
+
+  const [categoryOptions, setCategoryOptions] = useState(categories);
 
   const resetForm = () => {
     setName("");
@@ -92,12 +106,33 @@ export function CreateItemDialog({ onSubmit }: CreateItemDialogProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="category">Category (optional)</Label>
-          <Input
-            id="category"
+          <Label>Category</Label>
+
+          <Select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="e.g. Potion, Scroll"
+            options={categoryOptions.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+            onChange={(value) => {
+              setCategory(value ?? "");
+            }}
+            onCreate={async (value) => {
+              try {
+                const newCategory = await createCategory({
+                  groupId,
+                  name: value,
+                });
+
+                setCategoryOptions((prev) => [...prev, newCategory]);
+
+                setCategory(newCategory.id);
+                toast.success("Category created");
+              } catch (error) {
+                toast.error("Failed to create category");
+              }
+            }}
+            placeholder="Select or create category"
           />
         </div>
 

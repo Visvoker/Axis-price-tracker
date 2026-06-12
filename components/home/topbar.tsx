@@ -12,6 +12,10 @@ type TopbarProps = {
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
+  categories: {
+    id: string;
+    name: string;
+  }[];
 };
 
 export function Topbar(props: TopbarProps) {
@@ -29,11 +33,13 @@ export function Topbar(props: TopbarProps) {
 
       <div className="flex items-center gap-3">
         <CreateItemDialog
+          groupId={groupId}
+          categories={props.categories}
           onSubmit={async (values) => {
             await createItem({
               groupId,
               name: values.name,
-              category: values.category,
+              categoryId: values.category,
               price: values.price,
             });
 

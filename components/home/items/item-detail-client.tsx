@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
+import { PriceChart } from "@/components/items/price-chart";
+import { PriceHistoryTable } from "@/components/items/price-history-table";
 import { Button } from "@/components/ui/button";
 import { AddPriceDialog } from "@/components/items/add-price-dialog";
-import { PriceHistoryTable } from "@/components/items/price-history-table";
 import { createPriceRecord } from "@/lib/actions/price";
-import { PriceChart } from "@/components/items/price-chart";
 
 type ItemDetailClientProps = {
   item: {
@@ -30,32 +29,23 @@ type ItemDetailClientProps = {
 
 export default function ItemDetailClient({ item }: ItemDetailClientProps) {
   const router = useRouter();
-  const [addPriceOpen, setAddPriceOpen] = useState(false);
+  const [addingPriceOpen, setAddingPriceOpen] = useState(false);
 
   const chartData = [...item.prices].reverse().map((p) => ({
     date: p.createdAt,
     price: p.price,
   }));
 
+  if (!item) {
+    return null;
+  }
+
   return (
     <div className="space-y-6 items-center pt-3">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">{item.name}</h1>
-
-        <AddPriceDialog
-          itemName={item.name}
-          onSubmit={async (values) => {
-            await createPriceRecord({
-              itemId: item.id,
-              price: values.price,
-            });
-
-            router.refresh();
-          }}
-        >
-          <Button size="sm">+ Add Price</Button>
-        </AddPriceDialog>
+        <Button onClick={() => setAddingPriceOpen(true)}>+ Add Price</Button>
       </div>
 
       <div className="space-y-2 rounded-xl border p-4 ">
@@ -70,6 +60,24 @@ export default function ItemDetailClient({ item }: ItemDetailClientProps) {
       <PriceChart data={chartData} />
 
       <PriceHistoryTable prices={item.prices} />
+
+      <AddPriceDialog
+        open={addingPriceOpen}
+        onOpenChange={setAddingPriceOpen}
+        item={{
+          id: item.id,
+          name: item.name,
+        }}
+        onSubmit={async (values) => {
+          await createPriceRecord({
+            itemId: values.itemId,
+            price: values.price,
+          });
+
+          setAddingPriceOpen(false);
+          router.refresh();
+        }}
+      />
     </div>
   );
 }

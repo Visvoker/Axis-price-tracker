@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "../select";
+
+type CategoryOption = {
+  id: string;
+  name: string;
+};
 
 type EditItemDialogProps = {
   open: boolean;
@@ -19,12 +25,13 @@ type EditItemDialogProps = {
   item: {
     id: string;
     name: string;
-    category?: string | null;
+    currentCategory: CategoryOption | null;
   } | null;
+  categoryOptions: CategoryOption[];
   onSubmit: (values: {
     itemId: string;
     name: string;
-    category?: string;
+    categoryId?: string;
   }) => Promise<void>;
 };
 
@@ -32,20 +39,16 @@ export function EditItemDialog({
   open,
   onOpenChange,
   item,
+  categoryOptions,
   onSubmit,
 }: EditItemDialogProps) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState(item?.name ?? "");
+  const [categoryId, setCategoryId] = useState(item?.currentCategory?.id ?? "");
   const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setName("");
-    setCategory("");
-  };
-
-  const fillForm = () => {
-    setName(item?.name ?? "");
-    setCategory(item?.category ?? "");
+    setCategoryId("");
   };
 
   const handleSubmit = async () => {
@@ -57,22 +60,18 @@ export function EditItemDialog({
     await onSubmit({
       itemId: item.id,
       name: name.trim(),
-      category: category.trim() || undefined,
+      categoryId: categoryId || undefined,
     });
 
     setLoading(false);
     onOpenChange(false);
   };
 
-  // test
-
   return (
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (nextOpen) {
-          fillForm();
-        } else {
+        if (!nextOpen) {
           resetForm();
         }
 
@@ -95,12 +94,17 @@ export function EditItemDialog({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="edit-category">Category (optional)</Label>
-          <Input
-            id="edit-category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="e.g. Potion, Scroll"
+          <Label htmlFor="edit-category">Category</Label>
+          <Select
+            value={categoryId}
+            options={categoryOptions.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+            onChange={(value) => {
+              setCategoryId(value ?? "");
+            }}
+            placeholder="Select category"
           />
         </div>
 

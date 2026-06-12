@@ -27,7 +27,7 @@ export type AggregateItem = {
 export type ItemMinAggregateOutputType = {
   id: string | null
   name: string | null
-  category: string | null
+  categoryId: string | null
   note: string | null
   groupId: string | null
   createdAt: Date | null
@@ -37,7 +37,7 @@ export type ItemMinAggregateOutputType = {
 export type ItemMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  category: string | null
+  categoryId: string | null
   note: string | null
   groupId: string | null
   createdAt: Date | null
@@ -47,7 +47,7 @@ export type ItemMaxAggregateOutputType = {
 export type ItemCountAggregateOutputType = {
   id: number
   name: number
-  category: number
+  categoryId: number
   note: number
   groupId: number
   createdAt: number
@@ -59,7 +59,7 @@ export type ItemCountAggregateOutputType = {
 export type ItemMinAggregateInputType = {
   id?: true
   name?: true
-  category?: true
+  categoryId?: true
   note?: true
   groupId?: true
   createdAt?: true
@@ -69,7 +69,7 @@ export type ItemMinAggregateInputType = {
 export type ItemMaxAggregateInputType = {
   id?: true
   name?: true
-  category?: true
+  categoryId?: true
   note?: true
   groupId?: true
   createdAt?: true
@@ -79,7 +79,7 @@ export type ItemMaxAggregateInputType = {
 export type ItemCountAggregateInputType = {
   id?: true
   name?: true
-  category?: true
+  categoryId?: true
   note?: true
   groupId?: true
   createdAt?: true
@@ -162,7 +162,7 @@ export type ItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type ItemGroupByOutputType = {
   id: string
   name: string
-  category: string | null
+  categoryId: string | null
   note: string | null
   groupId: string
   createdAt: Date
@@ -193,25 +193,27 @@ export type ItemWhereInput = {
   NOT?: Prisma.ItemWhereInput | Prisma.ItemWhereInput[]
   id?: Prisma.StringFilter<"Item"> | string
   name?: Prisma.StringFilter<"Item"> | string
-  category?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
   note?: Prisma.StringNullableFilter<"Item"> | string | null
   groupId?: Prisma.StringFilter<"Item"> | string
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
   prices?: Prisma.PriceRecordListRelationFilter
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
 }
 
 export type ItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   group?: Prisma.GroupOrderByWithRelationInput
   prices?: Prisma.PriceRecordOrderByRelationAggregateInput
+  category?: Prisma.CategoryOrderByWithRelationInput
 }
 
 export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -221,19 +223,20 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ItemWhereInput[]
   NOT?: Prisma.ItemWhereInput | Prisma.ItemWhereInput[]
   name?: Prisma.StringFilter<"Item"> | string
-  category?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
   note?: Prisma.StringNullableFilter<"Item"> | string | null
   groupId?: Prisma.StringFilter<"Item"> | string
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
   prices?: Prisma.PriceRecordListRelationFilter
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
 }, "id" | "groupId_name">
 
 export type ItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -249,7 +252,7 @@ export type ItemScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ItemScalarWhereWithAggregatesInput | Prisma.ItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Item"> | string
   name?: Prisma.StringWithAggregatesFilter<"Item"> | string
-  category?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
   note?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
   groupId?: Prisma.StringWithAggregatesFilter<"Item"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Item"> | Date | string
@@ -259,18 +262,18 @@ export type ItemScalarWhereWithAggregatesInput = {
 export type ItemCreateInput = {
   id?: string
   name: string
-  category?: string | null
   note?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   group: Prisma.GroupCreateNestedOneWithoutItemsInput
   prices?: Prisma.PriceRecordCreateNestedManyWithoutItemInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
 }
 
 export type ItemUncheckedCreateInput = {
   id?: string
   name: string
-  category?: string | null
+  categoryId?: string | null
   note?: string | null
   groupId: string
   createdAt?: Date | string
@@ -281,18 +284,18 @@ export type ItemUncheckedCreateInput = {
 export type ItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   group?: Prisma.GroupUpdateOneRequiredWithoutItemsNestedInput
   prices?: Prisma.PriceRecordUpdateManyWithoutItemNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
 }
 
 export type ItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -303,7 +306,7 @@ export type ItemUncheckedUpdateInput = {
 export type ItemCreateManyInput = {
   id?: string
   name: string
-  category?: string | null
+  categoryId?: string | null
   note?: string | null
   groupId: string
   createdAt?: Date | string
@@ -313,7 +316,6 @@ export type ItemCreateManyInput = {
 export type ItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -322,7 +324,7 @@ export type ItemUpdateManyMutationInput = {
 export type ItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -347,7 +349,7 @@ export type ItemGroupIdNameCompoundUniqueInput = {
 export type ItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  category?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   note?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -357,7 +359,7 @@ export type ItemCountOrderByAggregateInput = {
 export type ItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  category?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   note?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -367,7 +369,7 @@ export type ItemMaxOrderByAggregateInput = {
 export type ItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  category?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   note?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -435,20 +437,62 @@ export type ItemUpdateOneRequiredWithoutPricesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutPricesInput, Prisma.ItemUpdateWithoutPricesInput>, Prisma.ItemUncheckedUpdateWithoutPricesInput>
 }
 
+export type ItemCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUncheckedCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoryInput | Prisma.ItemUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
+export type ItemUncheckedUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoryInput | Prisma.ItemUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
 export type ItemCreateWithoutGroupInput = {
   id?: string
   name: string
-  category?: string | null
   note?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   prices?: Prisma.PriceRecordCreateNestedManyWithoutItemInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
 }
 
 export type ItemUncheckedCreateWithoutGroupInput = {
   id?: string
   name: string
-  category?: string | null
+  categoryId?: string | null
   note?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -487,7 +531,7 @@ export type ItemScalarWhereInput = {
   NOT?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
   id?: Prisma.StringFilter<"Item"> | string
   name?: Prisma.StringFilter<"Item"> | string
-  category?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
   note?: Prisma.StringNullableFilter<"Item"> | string | null
   groupId?: Prisma.StringFilter<"Item"> | string
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
@@ -497,17 +541,17 @@ export type ItemScalarWhereInput = {
 export type ItemCreateWithoutPricesInput = {
   id?: string
   name: string
-  category?: string | null
   note?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   group: Prisma.GroupCreateNestedOneWithoutItemsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
 }
 
 export type ItemUncheckedCreateWithoutPricesInput = {
   id?: string
   name: string
-  category?: string | null
+  categoryId?: string | null
   note?: string | null
   groupId: string
   createdAt?: Date | string
@@ -533,27 +577,73 @@ export type ItemUpdateToOneWithWhereWithoutPricesInput = {
 export type ItemUpdateWithoutPricesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   group?: Prisma.GroupUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutPricesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ItemCreateWithoutCategoryInput = {
+  id?: string
+  name: string
+  note?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  group: Prisma.GroupCreateNestedOneWithoutItemsInput
+  prices?: Prisma.PriceRecordCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutCategoryInput = {
+  id?: string
+  name: string
+  note?: string | null
+  groupId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.PriceRecordUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput>
+}
+
+export type ItemCreateManyCategoryInputEnvelope = {
+  data: Prisma.ItemCreateManyCategoryInput | Prisma.ItemCreateManyCategoryInput[]
+  skipDuplicates?: boolean
+}
+
+export type ItemUpsertWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutCategoryInput, Prisma.ItemUncheckedUpdateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput>
+}
+
+export type ItemUpdateWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutCategoryInput, Prisma.ItemUncheckedUpdateWithoutCategoryInput>
+}
+
+export type ItemUpdateManyWithWhereWithoutCategoryInput = {
+  where: Prisma.ItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateManyMutationInput, Prisma.ItemUncheckedUpdateManyWithoutCategoryInput>
+}
+
 export type ItemCreateManyGroupInput = {
   id?: string
   name: string
-  category?: string | null
+  categoryId?: string | null
   note?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -562,17 +652,17 @@ export type ItemCreateManyGroupInput = {
 export type ItemUpdateWithoutGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prices?: Prisma.PriceRecordUpdateManyWithoutItemNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -582,8 +672,46 @@ export type ItemUncheckedUpdateWithoutGroupInput = {
 export type ItemUncheckedUpdateManyWithoutGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ItemCreateManyCategoryInput = {
+  id?: string
+  name: string
+  note?: string | null
+  groupId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ItemUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  group?: Prisma.GroupUpdateOneRequiredWithoutItemsNestedInput
+  prices?: Prisma.PriceRecordUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.PriceRecordUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateManyWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -622,59 +750,65 @@ export type ItemCountOutputTypeCountPricesArgs<ExtArgs extends runtime.Types.Ext
 export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  category?: boolean
+  categoryId?: boolean
   note?: boolean
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   prices?: boolean | Prisma.Item$pricesArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  category?: boolean
+  categoryId?: boolean
   note?: boolean
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  category?: boolean
+  categoryId?: boolean
   note?: boolean
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectScalar = {
   id?: boolean
   name?: boolean
-  category?: boolean
+  categoryId?: boolean
   note?: boolean
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "category" | "note" | "groupId" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
+export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "categoryId" | "note" | "groupId" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
 export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   prices?: boolean | Prisma.Item$pricesArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
 }
 export type ItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
 }
 
 export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -682,11 +816,12 @@ export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     group: Prisma.$GroupPayload<ExtArgs>
     prices: Prisma.$PriceRecordPayload<ExtArgs>[]
+    category: Prisma.$CategoryPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    category: string | null
+    categoryId: string | null
     note: string | null
     groupId: string
     createdAt: Date
@@ -1087,6 +1222,7 @@ export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   group<T extends Prisma.GroupDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GroupDefaultArgs<ExtArgs>>): Prisma.Prisma__GroupClient<runtime.Types.Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   prices<T extends Prisma.Item$pricesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PriceRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  category<T extends Prisma.Item$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1118,7 +1254,7 @@ export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface ItemFieldRefs {
   readonly id: Prisma.FieldRef<"Item", 'String'>
   readonly name: Prisma.FieldRef<"Item", 'String'>
-  readonly category: Prisma.FieldRef<"Item", 'String'>
+  readonly categoryId: Prisma.FieldRef<"Item", 'String'>
   readonly note: Prisma.FieldRef<"Item", 'String'>
   readonly groupId: Prisma.FieldRef<"Item", 'String'>
   readonly createdAt: Prisma.FieldRef<"Item", 'DateTime'>
@@ -1545,6 +1681,25 @@ export type Item$pricesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.PriceRecordScalarFieldEnum | Prisma.PriceRecordScalarFieldEnum[]
+}
+
+/**
+ * Item.category
+ */
+export type Item$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
 }
 
 /**
