@@ -13,7 +13,7 @@ import { DeleteItemDialog } from "@/components/items/delete-item-dialog";
 import { createPriceRecord } from "@/lib/actions/price";
 import { deleteItem, updateItem } from "@/lib/actions/item";
 
-type CategoryOption = {
+type categories = {
   id: string;
   name: string;
 };
@@ -23,19 +23,19 @@ type Item = {
   name: string;
   latestPrice: number | null;
   updatedAt: string;
-  currentCategory: CategoryOption | null;
+  currentCategory: categories | null;
 };
 
 type ItemsPageClientProps = {
   groupId: string;
   items: Item[];
-  categoryOptions: CategoryOption[];
+  categories: categories[];
 };
 
 export function ItemsPageClient({
   items,
   groupId,
-  categoryOptions,
+  categories,
 }: ItemsPageClientProps) {
   const [view, setView] = useState<"table" | "card">("table");
   const [search, setSearch] = useState("");
@@ -92,7 +92,7 @@ export function ItemsPageClient({
           if (!open) setEditingItemId(null);
         }}
         item={editingItem}
-        categoryOptions={categoryOptions}
+        categories={categories}
         onSubmit={async (values) => {
           await updateItem({
             groupId,
@@ -104,6 +104,7 @@ export function ItemsPageClient({
           setEditingItemId(null);
           router.refresh();
         }}
+        groupId={groupId}
       />
 
       <DeleteItemDialog

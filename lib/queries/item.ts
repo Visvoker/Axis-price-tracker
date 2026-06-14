@@ -4,7 +4,16 @@ export async function getItemsByGroupId(groupId: string) {
   return prisma.item.findMany({
     where: { groupId },
     orderBy: { createdAt: "asc" },
-    select: { id: true, name: true, category: true },
+    select: {
+      id: true,
+      name: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
   });
 }
 

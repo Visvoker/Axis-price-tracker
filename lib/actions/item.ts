@@ -69,7 +69,7 @@ export async function updateItem({
   itemId: string;
   name: string;
   groupId: string;
-  categoryId: string;
+  categoryId?: string;
 }) {
   const session = await auth();
 

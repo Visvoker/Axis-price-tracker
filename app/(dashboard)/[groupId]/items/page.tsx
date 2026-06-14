@@ -48,7 +48,7 @@ export default async function ItemsPage({ params }: ItemsPage) {
             }
           : null,
       }))}
-      categoryOptions={categories}
+      categories={categories}
     />
   );
 }
