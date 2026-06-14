@@ -67,7 +67,7 @@ export function SettingsPageClient({
         </CardHeader>
 
         <CardContent className="space-y-2">
-          <div className="relative max-w-md mb-3">
+          <div className="relative mb-3">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "../select";
+import toast from "react-hot-toast";
+import { createCategory } from "@/lib/actions/category";
 
-type CategoryOption = {
+type categories = {
   id: string;
   name: string;
 };
@@ -25,31 +27,30 @@ type EditItemDialogProps = {
   item: {
     id: string;
     name: string;
-    currentCategory: CategoryOption | null;
+    currentCategory: categories | null;
   } | null;
-  categoryOptions: CategoryOption[];
+  categories: categories[];
   onSubmit: (values: {
     itemId: string;
     name: string;
     categoryId?: string;
   }) => Promise<void>;
+  groupId: string;
 };
 
 export function EditItemDialog({
   open,
   onOpenChange,
   item,
-  categoryOptions,
+  categories,
   onSubmit,
+  groupId,
 }: EditItemDialogProps) {
   const [name, setName] = useState(item?.name ?? "");
   const [categoryId, setCategoryId] = useState(item?.currentCategory?.id ?? "");
   const [loading, setLoading] = useState(false);
 
-  const resetForm = () => {
-    setName("");
-    setCategoryId("");
-  };
+  const [categoryOptions, setCategoryOptions] = useState(categories);
 
   const handleSubmit = async () => {
     if (!item) return;
@@ -68,16 +69,7 @@ export function EditItemDialog({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          resetForm();
-        }
-
-        onOpenChange(nextOpen);
-      }}
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Item</DialogTitle>
@@ -103,6 +95,21 @@ export function EditItemDialog({
             }))}
             onChange={(value) => {
               setCategoryId(value ?? "");
+            }}
+            onCreate={async (value) => {
+              try {
+                const newCategory = await createCategory({
+                  groupId,
+                  name: value,
+                });
+
+                setCategoryOptions((prev) => [...prev, newCategory]);
+
+                setCategoryId(newCategory.id);
+                toast.success("Category created");
+              } catch (error) {
+                toast.error("Failed to create category");
+              }
             }}
             placeholder="Select category"
           />
