@@ -24,7 +24,7 @@ export default async function SelectGroupPage({ searchParams }: Props) {
 
   const session = await auth();
 
-  console.log("session:", session);
+  // console.log("session:", session);
 
   if (!session?.user?.id) {
     redirect("/login");

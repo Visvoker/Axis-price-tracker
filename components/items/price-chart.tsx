@@ -58,6 +58,21 @@ export function PriceChart({ data }: { data: PriceChartData[] }) {
     });
   }, [data, range]);
 
+  const maxPrice = Math.max(...filteredData.map((item) => item.price));
+
+  const yAxisWidth =
+    maxPrice >= 1_000_000_000
+      ? 100
+      : maxPrice >= 100_000_000
+        ? 90
+        : maxPrice >= 10_000_000
+          ? 80
+          : maxPrice >= 1_000_000
+            ? 70
+            : maxPrice >= 100_000
+              ? 65
+              : 55;
+
   return (
     <>
       <div className="flex justify-end">
@@ -85,7 +100,7 @@ export function PriceChart({ data }: { data: PriceChartData[] }) {
         <ResponsiveContainer>
           <LineChart
             data={filteredData}
-            margin={{ top: 10, right: 10, left: -20, bottom: -10 }}
+            margin={{ top: 10, right: 10, left: 20, bottom: -10 }}
           >
             <XAxis
               dataKey="date"
@@ -97,8 +112,10 @@ export function PriceChart({ data }: { data: PriceChartData[] }) {
                 })
               }
             />
-
-            <YAxis tickFormatter={(value) => Number(value).toLocaleString()} />
+            <YAxis
+              width={yAxisWidth}
+              tickFormatter={(value) => Number(value).toLocaleString()}
+            />
 
             <Tooltip
               labelFormatter={(value) => formatDateTime(String(value))}

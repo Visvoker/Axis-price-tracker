@@ -13,9 +13,13 @@ import { PriceHistoryTable } from "@/components/items/price-history-table";
 
 import {
   createPriceRecord,
-  getItemWithPricesAction,
+  deletePriceRecord,
+  updatePriceRecord,
 } from "@/lib/actions/price";
 import { useRouter } from "next/navigation";
+import { EditPriceRecordsDialog } from "./price/edit-price-records-dialog";
+import toast from "react-hot-toast";
+import { DeletePriceRecordsDialog } from "./price/delete-price-records-dialog";
 
 type ItemOption = {
   id: string;
@@ -24,12 +28,6 @@ type ItemOption = {
     name: string;
     id: string;
   };
-};
-
-type PriceRecordsClientProps = {
-  groupId: string;
-  items: ItemOption[];
-  initialSelectedItem: SelectedItemData | null;
 };
 
 type SelectedItemData = {
@@ -46,21 +44,36 @@ type SelectedItemData = {
     createdBy?: { name: string | null } | null;
   }[];
 };
+type PriceRecordsClientProps = {
+  groupId: string;
+  items: ItemOption[];
+  initialSelectedItem: SelectedItemData | null;
+};
 
 export function PriceRecordsClient({
   groupId,
   items,
   initialSelectedItem,
 }: PriceRecordsClientProps) {
-  const router = useRouter();
-
   const [search, setSearch] = useState("");
-  const [selectedItemData, setSelectedItemData] =
-    useState<SelectedItemData | null>(initialSelectedItem);
   const [isLoading, setIsLoading] = useState(false);
   const [addingPriceOpen, setAddingPriceOpen] = useState(false);
   const [recentItems, setRecentItems] = useState<ItemOption[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
+  const [deletingPriceId, setDeletingPriceId] = useState<string | null>(null);
+
+  const editingPrice =
+    initialSelectedItem?.prices.find((price) => price.id === editingPriceId) ??
+    null;
+
+  const deletingPrice =
+    initialSelectedItem?.prices.find((price) => price.id === deletingPriceId) ??
+    null;
+
+  const router = useRouter();
+  const selectedItemData = initialSelectedItem;
 
   const filteredItems = useMemo(() => {
     const value = search.trim().toLowerCase();
@@ -73,8 +86,6 @@ export function PriceRecordsClient({
   async function handleSelectItem(item: ItemOption) {
     setSearch("");
 
-    router.push(`/${groupId}/price-records?itemId=${item.id}`);
-
     setRecentItems((prev) => {
       const exists = prev.some((i) => i.id === item.id);
 
@@ -85,19 +96,7 @@ export function PriceRecordsClient({
       return [...prev, item].slice(-8);
     });
 
-    setIsLoading(true);
-
-    const data = await getItemWithPricesAction(item.id, groupId);
-
-    setSelectedItemData(data);
-    setIsLoading(false);
-  }
-
-  async function refreshSelectedItem() {
-    if (!selectedItemData) return;
-
-    const data = await getItemWithPricesAction(selectedItemData.id, groupId);
-    setSelectedItemData(data);
+    router.push(`/${groupId}/price-records?itemId=${item.id}`);
   }
 
   useEffect(() => {
@@ -207,7 +206,7 @@ export function PriceRecordsClient({
                       price: values.price,
                     });
 
-                    await refreshSelectedItem();
+                    router.refresh();
                   }}
                 />
                 <Button onClick={() => setAddingPriceOpen(true)}>+</Button>
@@ -222,9 +221,66 @@ export function PriceRecordsClient({
               />
             </CardContent>
           </Card>
-          <PriceHistoryTable prices={selectedItemData.prices} />
+
+          <PriceHistoryTable
+            prices={selectedItemData.prices}
+            onEdit={setEditingPriceId}
+            onDelete={setDeletingPriceId}
+          />
         </div>
       )}
+
+      <EditPriceRecordsDialog
+        key={editingPrice?.id ?? "emptyE"}
+        open={!!editingPriceId}
+        onOpenChange={(open) => {
+          if (!open) setEditingPriceId(null);
+        }}
+        priceRecord={editingPrice}
+        onSubmit={async (values) => {
+          try {
+            await updatePriceRecord({
+              priceRecordId: values.id,
+              price: values.price,
+            });
+
+            toast.success("Price updated!");
+            setEditingPriceId(null);
+            router.refresh();
+          } catch (error) {
+            toast.error(
+              error instanceof Error ? error.message : "Failed to update price",
+            );
+
+            throw error;
+          }
+        }}
+      />
+
+      <DeletePriceRecordsDialog
+        key={deletingPrice?.id ?? "emptyD"}
+        open={!!deletingPriceId}
+        onOpenChange={(open) => {
+          if (!open) setDeletingPriceId(null);
+        }}
+        priceRecord={deletingPrice}
+        onSubmit={async (value) => {
+          try {
+            await deletePriceRecord({
+              priceRecordId: value.priceRecordId,
+            });
+            toast.success("Price deleted!");
+            setDeletingPriceId(null);
+            router.refresh();
+          } catch (error) {
+            toast.error(
+              error instanceof Error ? error.message : "Failed to delete price",
+            );
+
+            throw error;
+          }
+        }}
+      />
     </div>
   );
 }

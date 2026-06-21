@@ -137,7 +137,7 @@ export function CreateItemDialog({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="price">Current Price (optional)</Label>
+          <Label htmlFor="price">Current Price</Label>
           <NumericFormat
             customInput={Input}
             className={cn(price && "tracking-wider")}
