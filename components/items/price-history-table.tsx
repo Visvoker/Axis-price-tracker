@@ -8,6 +8,14 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { MoreHorizontal } from "lucide-react";
 
 type PriceHistory = {
   id: string;
@@ -18,9 +26,15 @@ type PriceHistory = {
 
 type PriceHistoryTableProps = {
   prices: PriceHistory[];
+  onEdit: (editingPriceId: string) => void;
+  onDelete: (deletingPriceId: string) => void;
 };
 
-export function PriceHistoryTable({ prices }: PriceHistoryTableProps) {
+export function PriceHistoryTable({
+  prices,
+  onEdit,
+  onDelete,
+}: PriceHistoryTableProps) {
   if (!prices.length) {
     return (
       <div className="rounded-xl border p-6 text-sm text-muted-foreground">
@@ -64,7 +78,27 @@ export function PriceHistoryTable({ prices }: PriceHistoryTableProps) {
                 })}
               </TableCell>
 
-              <TableCell className="text-right">123</TableCell>
+              <TableCell className="text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => onEdit(p.id)}>
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => onDelete(p.id)}
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
