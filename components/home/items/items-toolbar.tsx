@@ -1,43 +1,52 @@
 "use client";
 
-import { LayoutGrid, List } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type ItemsToolbarProps = {
-  view: "table" | "card";
-  onViewChange: (view: "table" | "card") => void;
+  selectedCategoryId: string;
+  categories: {
+    id: string;
+    name: string;
+  }[];
+  onCategoryChange: (value: string) => void;
   search: string;
   onSearchChange: (value: string) => void;
 };
 
 export function ItemsToolbar({
-  view,
-  onViewChange,
+  categories,
+  selectedCategoryId,
+  onCategoryChange,
   search,
   onSearchChange,
 }: ItemsToolbarProps) {
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border bg-background p-4">
-      <ToggleGroup
-        type="single"
-        value={view}
-        onValueChange={(value) => {
-          if (value === "table" || value === "card") {
-            onViewChange(value);
-          }
-        }}
-      >
-        <ToggleGroupItem value="table" aria-label="Table view">
-          <List className="h-4 w-4" />
-        </ToggleGroupItem>
+      <Select value={selectedCategoryId} onValueChange={onCategoryChange}>
+        <SelectTrigger className="w-[300px] min-w-[100px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="all">All categories</SelectItem>
 
-        <ToggleGroupItem value="card" aria-label="Card view">
-          <LayoutGrid className="h-4 w-4" />
-        </ToggleGroupItem>
-      </ToggleGroup>
-
-      <div className="w-full max-w-xs">
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <div className="w-full max-w-[600px]">
         <Input
           placeholder="Search items..."
           value={search}

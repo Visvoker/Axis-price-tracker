@@ -47,7 +47,7 @@ export default async function DashboardLayout({
           image={session.user.image}
         />
       </div>
-      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto rounded-lg bg-background md:m-2">
+      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto md:rounded-lg bg-background md:m-2">
         <Topbar
           groupId={groupId}
           groupName={membership.group.name}

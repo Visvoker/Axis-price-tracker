@@ -17,7 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 type Item = {
   id: string;
@@ -40,7 +40,6 @@ export function ItemsTable({
   onAddPrice,
 }: ItemsTableProps) {
   const params = useParams();
-  const router = useRouter();
 
   const groupId = params.groupId as string;
 
