@@ -37,13 +37,26 @@ export function ItemsPageClient({
   groupId,
   categories,
 }: ItemsPageClientProps) {
-  const [view, setView] = useState<"table" | "card">("table");
   const [search, setSearch] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState("all");
   const [addingPriceItemId, setAddingPriceItemId] = useState<string | null>(
     null,
   );
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+
+  const normalizedSearch = search.trim().toLowerCase();
+
+  const filteredItems = items.filter((item) => {
+    const matchesSearch =
+      normalizedSearch.length === 0 ||
+      item.name.toLowerCase().includes(normalizedSearch);
+    const matchesCategory =
+      selectedCategoryId === "all" ||
+      item.currentCategory?.id === selectedCategoryId;
+
+    return matchesSearch && matchesCategory;
+  });
 
   const router = useRouter();
 
@@ -55,14 +68,15 @@ export function ItemsPageClient({
   return (
     <div className="space-y-6 pt-2 min-h-0 overflow-y-auto">
       <ItemsToolbar
-        view={view}
+        categories={categories}
+        selectedCategoryId={selectedCategoryId}
+        onCategoryChange={setSelectedCategoryId}
         search={search}
-        onViewChange={setView}
         onSearchChange={setSearch}
       />
 
       <ItemsTable
-        items={items}
+        items={filteredItems}
         onEdit={setEditingItemId}
         onDelete={setDeletingItemId}
         onAddPrice={setAddingPriceItemId}

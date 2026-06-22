@@ -24,9 +24,16 @@ export default async function ItemsPage({ params }: ItemsPage) {
       },
       category: true,
     },
-    orderBy: {
-      updatedAt: "desc",
-    },
+  });
+
+  items.sort((a, b) => {
+    const latestPriceA = a.prices[0];
+    const latestPriceB = b.prices[0];
+
+    const aTime = latestPriceA ? latestPriceA.createdAt.getTime() : 0;
+    const bTime = latestPriceB ? latestPriceB.createdAt.getTime() : 0;
+
+    return bTime - aTime;
   });
 
   const categories = await getCategoriesByGroupId(groupId);
