@@ -12,6 +12,7 @@ import { DeleteItemDialog } from "@/components/items/delete-item-dialog";
 
 import { createPriceRecord } from "@/lib/actions/price";
 import { deleteItem, updateItem } from "@/lib/actions/item";
+import { TablePagination } from "@/components/table-pagination";
 
 type categories = {
   id: string;
@@ -44,9 +45,12 @@ export function ItemsPageClient({
   );
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const router = useRouter();
 
   const normalizedSearch = search.trim().toLowerCase();
-
   const filteredItems = items.filter((item) => {
     const matchesSearch =
       normalizedSearch.length === 0 ||
@@ -58,7 +62,11 @@ export function ItemsPageClient({
     return matchesSearch && matchesCategory;
   });
 
-  const router = useRouter();
+  const totalItems = filteredItems.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const paginatedItems = filteredItems.slice(startIndex, endIndex);
 
   const addingPriceItem =
     items.find((item) => item.id === addingPriceItemId) ?? null;
@@ -70,16 +78,33 @@ export function ItemsPageClient({
       <ItemsToolbar
         categories={categories}
         selectedCategoryId={selectedCategoryId}
-        onCategoryChange={setSelectedCategoryId}
+        onCategoryChange={(value) => {
+          setSelectedCategoryId(value);
+          setCurrentPage(1);
+        }}
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={(value) => {
+          setSearch(value);
+          setCurrentPage(1);
+        }}
       />
 
       <ItemsTable
-        items={filteredItems}
+        items={paginatedItems}
         onEdit={setEditingItemId}
         onDelete={setDeletingItemId}
         onAddPrice={setAddingPriceItemId}
+      />
+
+      <TablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        rowsPerPage={rowsPerPage}
+        totalItems={totalItems}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        onPageChange={setCurrentPage}
+        onRowsPerPageChange={setRowsPerPage}
       />
 
       <AddPriceDialog

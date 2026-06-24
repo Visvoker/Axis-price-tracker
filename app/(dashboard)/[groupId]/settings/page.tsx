@@ -24,15 +24,15 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   const categories = await getCategoriesByGroupId(groupId);
 
   return (
-    <div className="space-y-6 pt-2">
+    <div className="space-y-6 pt-3">
       <div>
         <h1 className="text-2xl font-semibold">Group Settings</h1>
-        <p className="text-muted-foreground">
+        {/* <p className="text-muted-foreground">
           Manage invite links and group settings.
-        </p>
+        </p> */}
       </div>
 
-      <CreateInviteButton groupId={groupId} />
+      {/* <CreateInviteButton groupId={groupId} />
 
       <div className="space-y-2">
         {invites.map((invite) => (
@@ -45,7 +45,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <SettingsPageClient categories={categories} groupId={groupId} />
     </div>
