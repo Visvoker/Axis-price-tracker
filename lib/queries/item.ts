@@ -62,7 +62,15 @@ export async function getRecentActivitiesByGroupId(groupId: string) {
   const records = await prisma.priceRecord.findMany({
     where: { item: { groupId } },
     include: {
-      item: true,
+      item: {
+        include: {
+          category: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
       createdBy: true,
     },
     orderBy: {
@@ -97,6 +105,7 @@ export async function getRecentActivitiesByGroupId(groupId: string) {
       return {
         ...record,
         baselinePrice: baselineRecord ? Number(baselineRecord.price) : null,
+        categoryName: record.item.category?.name ?? null,
       };
     }),
   );

@@ -46,11 +46,13 @@ export function ItemsToolbar({
           </SelectGroup>
         </SelectContent>
       </Select>
+
       <div className="w-full max-w-[600px]">
         <Input
           placeholder="Search items..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
+          className="h-8"
         />
       </div>
     </div>

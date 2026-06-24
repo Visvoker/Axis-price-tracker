@@ -16,6 +16,7 @@ import {
   deleteCategory,
   updateCategory,
 } from "@/lib/actions/category";
+import { TablePagination } from "./table-pagination";
 
 type SettingsPageClientProps = {
   categories: Category[];
@@ -39,6 +40,8 @@ export function SettingsPageClient({
   const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
     null,
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const router = useRouter();
   const editingCategory =
@@ -49,6 +52,12 @@ export function SettingsPageClient({
   const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const totalCategories = filteredCategories.length;
+  const totalPages = Math.max(1, Math.ceil(totalCategories / rowsPerPage));
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const paginatedCategories = filteredCategories.slice(startIndex, endIndex);
 
   return (
     <>
@@ -71,13 +80,16 @@ export function SettingsPageClient({
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               placeholder="Search category ..."
               className="pl-9"
             />
           </div>
 
-          {filteredCategories.map((category) => (
+          {paginatedCategories.map((category) => (
             <div
               key={category.id}
               className="flex items-center justify-between rounded-lg border px-4 py-3"
@@ -104,6 +116,16 @@ export function SettingsPageClient({
               </div>
             </div>
           ))}
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            rowsPerPage={rowsPerPage}
+            totalItems={totalCategories}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+          />
         </CardContent>
       </Card>
 

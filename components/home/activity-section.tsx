@@ -36,20 +36,20 @@ export async function ActivitySection({ groupId }: ActivitySectionProps) {
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <p className="font-medium">
+                  <p className="text-sm">
                     <Link href={`/${groupId}/items/${record.item.id}`}>
                       {record.item.name}
                     </Link>
                   </p>
 
-                  {record.item.category && (
-                    <span className="text-xs text-muted-foreground">
-                      {record.item.category}
+                  {record.categoryName && (
+                    <span className="text-[11px] text-muted-foreground">
+                      {record.categoryName}
                     </span>
                   )}
                 </div>
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {record.createdBy.name ?? "Unknown"} ·{" "}
                   {record.createdAt.toLocaleString("zh-TW")}
                 </p>
