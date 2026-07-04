@@ -3,7 +3,6 @@ import { prisma } from "@/lib/db";
 export async function getItemsByGroupId(groupId: string) {
   return prisma.item.findMany({
     where: { groupId },
-    orderBy: { createdAt: "asc" },
     select: {
       id: true,
       name: true,
@@ -14,6 +13,7 @@ export async function getItemsByGroupId(groupId: string) {
         },
       },
     },
+    orderBy: { name: "asc" },
   });
 }
 

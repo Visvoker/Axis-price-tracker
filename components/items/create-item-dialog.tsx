@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select } from "@/components/select";
+import { CreatableSelect } from "@/components/creatable-select";
 
 import { cn } from "@/lib/utils";
 import { formatPriceToUnit } from "@/lib/utils/format";
@@ -90,7 +90,7 @@ export function CreateItemDialog({
         </Button>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="max-w-sm sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Item</DialogTitle>
         </DialogHeader>
@@ -108,7 +108,7 @@ export function CreateItemDialog({
         <div className="space-y-2">
           <Label>Category</Label>
 
-          <Select
+          <CreatableSelect
             value={category}
             options={categoryOptions.map((category) => ({
               label: category.name,

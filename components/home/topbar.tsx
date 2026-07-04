@@ -5,6 +5,10 @@ import { CreateItemDialog } from "../items/create-item-dialog";
 import { MobileSidebar } from "../sidebar/mobile-sidebar";
 
 import { createItem } from "@/lib/actions/item";
+import { QuickAddPriceDialog } from "../quick-add-price-dialog";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { createPriceRecord } from "@/lib/actions/price";
 
 type TopbarProps = {
   groupId: string;
@@ -32,6 +36,18 @@ export function Topbar(props: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-3">
+        <QuickAddPriceDialog
+          groupId={groupId}
+          onSubmit={async (value) => {
+            await createPriceRecord({
+              itemId: value.itemId,
+              price: value.price,
+            });
+
+            router.refresh();
+          }}
+        />
+
         <CreateItemDialog
           groupId={groupId}
           categories={props.categories}
