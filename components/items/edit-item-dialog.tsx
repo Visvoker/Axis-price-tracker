@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select } from "../select";
+import { CreatableSelect } from "@/components/creatable-select";
 import toast from "react-hot-toast";
 import { createCategory } from "@/lib/actions/category";
 
@@ -87,7 +87,7 @@ export function EditItemDialog({
 
         <div className="space-y-2">
           <Label htmlFor="edit-category">Category</Label>
-          <Select
+          <CreatableSelect
             value={categoryId}
             options={categoryOptions.map((category) => ({
               label: category.name,

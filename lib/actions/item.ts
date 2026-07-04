@@ -168,3 +168,41 @@ export async function deleteItem({
     },
   });
 }
+
+export async function getItemsForPriceSelect(groupId: string) {
+  const session = await auth();
+
+  if (!session?.user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const membership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+  });
+
+  if (!membership) {
+    throw new Error("No permission");
+  }
+
+  return prisma.item.findMany({
+    where: { groupId },
+    select: {
+      id: true,
+      name: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+}

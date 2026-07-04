@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import { SingleValue } from "react-select";
-import CreatableSelect from "react-select/creatable";
+import Creatable from "react-select/creatable";
+import { shadcnSelectStyles } from "./select-styles";
 
 type Props = {
   onChange: (value?: string) => void;
@@ -13,7 +14,7 @@ type Props = {
   placeholder?: string;
 };
 
-export const Select = ({
+export const CreatableSelect = ({
   value,
   onChange,
   disabled,
@@ -30,18 +31,9 @@ export const Select = ({
   }, [options, value]);
 
   return (
-    <CreatableSelect
+    <Creatable
       placeholder={placeholder}
-      className="text-sm h-10"
-      styles={{
-        control: (base) => ({
-          ...base,
-          borderColor: "#e2e8f0",
-          ":hover": {
-            borderColor: "#e2e8f0",
-          },
-        }),
-      }}
+      styles={shadcnSelectStyles}
       value={formattedValue}
       onChange={onSelect}
       options={options}
