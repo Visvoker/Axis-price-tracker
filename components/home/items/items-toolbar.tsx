@@ -29,7 +29,7 @@ export function ItemsToolbar({
   onSearchChange,
 }: ItemsToolbarProps) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border bg-background p-4">
+    <div className="flex items-center justify-between gap-4 bg-background pt-4">
       <Select value={selectedCategoryId} onValueChange={onCategoryChange}>
         <SelectTrigger className="w-[300px] min-w-[100px]">
           <SelectValue />

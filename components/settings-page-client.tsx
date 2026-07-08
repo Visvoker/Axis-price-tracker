@@ -8,19 +8,23 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EditCategoryDialog } from "@/components/setting/edit-category-dialog";
-import { CreateCategoryDialog } from "@/components/setting/create-category-dialog";
-import { DeleteCategoryDialog } from "@/components/setting/delete-category-dialog";
+import { EditCategoryDialog } from "@/components/settings/edit-category-dialog";
+import { CreateCategoryDialog } from "@/components/settings/create-category-dialog";
+import { DeleteCategoryDialog } from "@/components/settings/delete-category-dialog";
 import {
   createCategory,
   deleteCategory,
   updateCategory,
 } from "@/lib/actions/category";
 import { TablePagination } from "./table-pagination";
+import { MembersCard } from "@/components/settings/members-card";
 
 type SettingsPageClientProps = {
   categories: Category[];
   groupId: string;
+  members: Member[];
+  ownerId: string | null;
+  canManageMembers: boolean;
 };
 
 type Category = {
@@ -28,9 +32,23 @@ type Category = {
   name: string;
 };
 
+type Member = {
+  id: string;
+  userId: string;
+  role: "ADMIN" | "MEMBER";
+  user: {
+    name: string | null;
+    email: string | null;
+    image: string | null;
+  };
+};
+
 export function SettingsPageClient({
   categories,
   groupId,
+  members,
+  ownerId,
+  canManageMembers,
 }: SettingsPageClientProps) {
   const [search, setSearch] = useState("");
   const [creatingCategoryOpen, setCreatingCategoryOpen] = useState(false);
@@ -61,73 +79,84 @@ export function SettingsPageClient({
 
   return (
     <>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Category Management</CardTitle>
-          <div>
-            <Button
-              onClick={() => {
-                setCreatingCategoryOpen(true);
-              }}
-            >
-              +
-            </Button>
-          </div>
-        </CardHeader>
+      <div className="flex h-full min-h-0 flex-col space-y-6 w-full">
+        <MembersCard
+          groupId={groupId}
+          members={members}
+          ownerId={ownerId}
+          canManageMembers={canManageMembers}
+        />
 
-        <CardContent className="space-y-2">
-          <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Search category ..."
-              className="pl-9"
-            />
-          </div>
-
-          {paginatedCategories.map((category) => (
-            <div
-              key={category.id}
-              className="flex items-center justify-between rounded-lg border px-4 py-3"
-            >
-              <p className="font-medium">{category.name}</p>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setEditingCategoryId(category.id)}
-                >
-                  Edit
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive"
-                  onClick={() => setDeletingCategoryId(category.id)}
-                >
-                  Delete
-                </Button>
-              </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Category Management</CardTitle>
+            <div>
+              <Button
+                onClick={() => {
+                  setCreatingCategoryOpen(true);
+                }}
+              >
+                +
+              </Button>
             </div>
-          ))}
-          <TablePagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            rowsPerPage={rowsPerPage}
-            totalItems={totalCategories}
-            startIndex={startIndex}
-            endIndex={endIndex}
-            onPageChange={setCurrentPage}
-            onRowsPerPageChange={setRowsPerPage}
-          />
-        </CardContent>
-      </Card>
+          </CardHeader>
+
+          <CardContent className="space-y-2">
+            <div className="relative mb-3">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search category ..."
+                className="pl-9"
+              />
+            </div>
+            {paginatedCategories.map((category) => (
+              <div
+                key={category.id}
+                className="flex items-center justify-between rounded-lg border px-3 py-2"
+              >
+                <p className="font-medium">{category.name}</p>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditingCategoryId(category.id)}
+                  >
+                    Edit
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive"
+                    onClick={() => setDeletingCategoryId(category.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
+
+            <div className="pt-3">
+              <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                rowsPerPage={rowsPerPage}
+                totalItems={totalCategories}
+                startIndex={startIndex}
+                endIndex={endIndex}
+                onPageChange={setCurrentPage}
+                onRowsPerPageChange={setRowsPerPage}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <CreateCategoryDialog
         open={creatingCategoryOpen}

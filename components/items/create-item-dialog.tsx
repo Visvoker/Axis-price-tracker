@@ -44,6 +44,7 @@ export function CreateItemDialog({
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
 
@@ -60,17 +61,31 @@ export function CreateItemDialog({
 
     const parsedPrice = Number(price);
 
+    setError("");
     setLoading(true);
 
-    await onSubmit({
-      name: name.trim(),
-      category: category || undefined,
-      price: parsedPrice > 0 ? parsedPrice : undefined,
-    });
+    try {
+      await onSubmit({
+        name: name.trim(),
+        category: category || undefined,
+        price: parsedPrice > 0 ? parsedPrice : undefined,
+      });
 
-    setLoading(false);
-    resetForm();
-    setOpen(false);
+      toast.success("物品創建成功 !");
+      resetForm();
+      setOpen(false);
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message === "Item name already exists"
+      ) {
+        setError("這個品項名稱已經存在");
+      } else {
+        setError("建立品項失敗，請稍後再試");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,6 +118,7 @@ export function CreateItemDialog({
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter item name"
           />
+          {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
 
         <div className="space-y-2">

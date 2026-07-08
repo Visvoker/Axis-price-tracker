@@ -58,7 +58,7 @@ export function CreateCategoryDialog({
         onOpenChange(nextOpen);
       }}
     >
-      <DialogContent>
+      <DialogContent className="max-w-sm sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
         </DialogHeader>
