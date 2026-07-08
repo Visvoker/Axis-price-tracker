@@ -1,14 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CreateItemDialog } from "../items/create-item-dialog";
 import { MobileSidebar } from "../sidebar/mobile-sidebar";
+import { CreateItemDialog } from "../items/create-item-dialog";
 
 import { createItem } from "@/lib/actions/item";
-import { QuickAddPriceDialog } from "../quick-add-price-dialog";
-import { useState } from "react";
-import { Button } from "../ui/button";
 import { createPriceRecord } from "@/lib/actions/price";
+
+import { QuickAddPriceDialog } from "../quick-add-price-dialog";
 
 type TopbarProps = {
   groupId: string;

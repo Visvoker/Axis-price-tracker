@@ -55,7 +55,7 @@ export function AddPriceDialog({
       price: parsedPrice,
     });
 
-    toast.success("成功新增價格");
+    toast.success("新增價格成功 !");
     setLoading(false);
     resetForm();
     onOpenChange(false);

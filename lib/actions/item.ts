@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "../db";
+import { Prisma } from "../../generated/prisma/client";
 
 export async function createItem({
   name,
@@ -37,27 +38,38 @@ export async function createItem({
     throw new Error("No permission");
   }
 
-  return prisma.$transaction(async (tx) => {
-    const item = await tx.item.create({
-      data: {
-        name,
-        categoryId,
-        groupId: membership.groupId,
-      },
-    });
-
-    if (price && price > 0) {
-      await tx.priceRecord.create({
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const item = await tx.item.create({
         data: {
-          itemId: item.id,
-          price,
-          createdById: session.user.id,
+          name,
+          categoryId,
+          groupId: membership.groupId,
         },
       });
+
+      if (price && price > 0) {
+        await tx.priceRecord.create({
+          data: {
+            itemId: item.id,
+            price,
+            createdById: session.user.id,
+          },
+        });
+      }
+
+      return item;
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      throw new Error("Item name already exists");
     }
 
-    return item;
-  });
+    throw error;
+  }
 }
 
 export async function updateItem({

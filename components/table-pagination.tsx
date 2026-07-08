@@ -41,7 +41,7 @@ export function TablePagination({
   return (
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-sm text-muted-foreground">
+        <p className="pl-3 text-sm text-muted-foreground">
           {totalItems === 0 ? 0 : startIndex + 1}-
           {Math.min(endIndex, totalItems)} of {totalItems}
         </p>

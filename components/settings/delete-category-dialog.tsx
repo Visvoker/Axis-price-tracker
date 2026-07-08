@@ -47,7 +47,7 @@ export function DeleteCategoryDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-sm sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Delete Category</DialogTitle>
         </DialogHeader>
