@@ -1,5 +1,6 @@
 import { SidebarNav, type NavItem } from "@/components/sidebar/sidebar-nav";
 import { SidebarUser } from "./sidebar-user";
+import { WorkspaceSwitcher } from "./workspace-switcher";
 
 type SidebarContentProps = {
   groupId: string;
@@ -7,6 +8,11 @@ type SidebarContentProps = {
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
+  groups: {
+    id: string;
+    name: string;
+    role: "ADMIN" | "MEMBER";
+  }[];
 };
 
 export function SidebarContent({
@@ -15,6 +21,7 @@ export function SidebarContent({
   role,
   name,
   image,
+  groups,
 }: SidebarContentProps) {
   const navItems: NavItem[] = [
     {
@@ -41,18 +48,24 @@ export function SidebarContent({
 
   return (
     <aside className="flex h-screen w-60 flex-col justify-between px-3 py-5 md:bg-muted">
-      <div className="space-y-6">
-        <div className="px-2">
-          <h1 className="text-xl font-semibold tracking-tight">
-            AxisPriceTracker
-          </h1>
+      <div className="space-y-3">
+        <div className="px-3">
+          <h1 className="text-xl font-semibold tracking-tight">AxisCult</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Guild Price Tracker
           </p>
         </div>
-
         <div className="mx-2 border-t border-[#E7E8E7]" />
 
+        <div className="">
+          <WorkspaceSwitcher
+            currentGroupId={groupId}
+            currentGroupName={groupName}
+            groups={groups}
+          />
+        </div>
+
+        <div className="mx-2 border-t border-[#E7E8E7]" />
         <nav>
           <SidebarNav items={navItems} />
         </nav>

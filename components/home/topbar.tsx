@@ -19,6 +19,11 @@ type TopbarProps = {
     id: string;
     name: string;
   }[];
+  groups: {
+    id: string;
+    name: string;
+    role: "ADMIN" | "MEMBER";
+  }[];
 };
 
 export function Topbar(props: TopbarProps) {
@@ -29,7 +34,7 @@ export function Topbar(props: TopbarProps) {
     <header className="flex h-16 items-center justify-between border-b bg-background px-3 ">
       <div className="min-w-0">
         <MobileSidebar {...props} />
-        <p className="truncate text-sm font-medium text-foreground hidden md:block">
+        <p className="truncate text-lg font-medium text-foreground hidden md:block">
           {props.groupName}
         </p>
       </div>

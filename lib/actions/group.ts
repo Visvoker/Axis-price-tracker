@@ -7,7 +7,14 @@ import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-export async function createGroup(formData: FormData) {
+type CreateGroupState = {
+  error: string | null;
+};
+
+export async function createGroup(
+  prevState: CreateGroupState,
+  formData: FormData,
+): Promise<CreateGroupState> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -17,7 +24,7 @@ export async function createGroup(formData: FormData) {
   const name = formData.get("name")?.toString().trim();
 
   if (!name) {
-    throw new Error("Group 名稱不能為空");
+    return { error: "群組的名稱不能為空" };
   }
 
   const group = await prisma.group.create({
