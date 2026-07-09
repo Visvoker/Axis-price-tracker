@@ -25,3 +25,17 @@ export async function getGroupWithMembership(userId: string, groupId: string) {
     },
   });
 }
+
+export async function getGroupsByUserId(userId: string) {
+  return prisma.groupMember.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      group: true,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+}

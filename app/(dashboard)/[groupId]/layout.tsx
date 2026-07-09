@@ -6,7 +6,7 @@ import { Topbar } from "@/components/home/topbar";
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { PageContainer } from "@/components/home/page-container";
 
-import { getGroupWithMembership } from "@/lib/queries/group";
+import { getGroupsByUserId, getGroupWithMembership } from "@/lib/queries/group";
 import { getCategoriesByGroupId } from "@/lib/queries/category";
 
 type DashboardLayoutProp = {
@@ -36,6 +36,8 @@ export default async function DashboardLayout({
 
   const categories = await getCategoriesByGroupId(groupId);
 
+  const groups = await getGroupsByUserId(session.user.id);
+
   return (
     <div className="flex h-full overflow-hidden bg-muted">
       <div className="hidden md:flex">
@@ -43,6 +45,11 @@ export default async function DashboardLayout({
           groupId={groupId}
           groupName={membership.group.name}
           role={membership.role}
+          groups={groups.map((membership) => ({
+            id: membership.group.id,
+            name: membership.group.name,
+            role: membership.role,
+          }))}
           name={session.user.name}
           image={session.user.image}
         />
@@ -55,6 +62,11 @@ export default async function DashboardLayout({
           name={session.user.name}
           image={session.user.image}
           categories={categories}
+          groups={groups.map((membership) => ({
+            id: membership.group.id,
+            name: membership.group.name,
+            role: membership.role,
+          }))}
         />
         <div className="px-3 pb-3 md:px-6">
           <PageContainer>{children}</PageContainer>

@@ -17,6 +17,11 @@ type MobileSidebarProps = {
   role: "ADMIN" | "MEMBER";
   name?: string | null;
   image?: string | null;
+  groups: {
+    id: string;
+    name: string;
+    role: "ADMIN" | "MEMBER";
+  }[];
 };
 
 export function MobileSidebar(props: MobileSidebarProps) {
