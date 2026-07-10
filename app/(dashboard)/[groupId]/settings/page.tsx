@@ -6,6 +6,7 @@ import { getCategoriesByGroupId } from "@/lib/queries/category";
 
 import { CreateInviteButton } from "@/components/create-invite-button";
 import { SettingsPageClient } from "@/components/settings-page-client";
+import { GroupManagementCard } from "@/components/settings/group-management-card";
 
 type SettingsPageProps = {
   params: Promise<{
@@ -37,6 +38,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     where: { id: groupId },
     select: {
       ownerId: true,
+      name: true,
       members: {
         orderBy: { createdAt: "asc" },
         select: {
@@ -55,8 +57,12 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     },
   });
 
-  const canManageMembers =
-    group?.ownerId === session.user.id || currentMembership?.role === "ADMIN";
+  const isOwner = group?.ownerId === session.user.id;
+  const isAdmin = currentMembership?.role === "ADMIN";
+  const canManageGroup = isOwner || isAdmin;
+
+  const canUpdateGroup = canManageGroup;
+  const canDeleteGroup = isOwner;
 
   const invites = await prisma.groupInvite.findMany({
     where: {
@@ -70,12 +76,12 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   return (
     <div className="space-y-6 pt-3">
       <div>
-        <h1 className="text-2xl font-semibold">Group Settings</h1>
-        {/* <p className="text-muted-foreground">
+        <h1 className="text-2xl font-semibold">Settings</h1>
+        <p className="text-muted-foreground">
           Manage invite links and group settings.
-        </p> */}
+        </p>
       </div>
-      {/* <CreateInviteButton groupId={groupId} />
+      <CreateInviteButton groupId={groupId} />
 
       <div className="space-y-2">
         {invites.map((invite) => (
@@ -88,14 +94,20 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
             </p>
           </div>
         ))}
-      </div> */}
+      </div>
       <SettingsPageClient
         categories={categories}
         groupId={groupId}
         members={group?.members ?? []}
         ownerId={group?.ownerId ?? null}
-        canManageMembers={canManageMembers}
-      />{" "}
+        canManageGroup={canManageGroup}
+      />
+      <GroupManagementCard
+        groupId={groupId}
+        groupName={group?.name || "123"}
+        canUpdateGroup={canUpdateGroup}
+        canDeleteGroup={canDeleteGroup}
+      />
     </div>
   );
 }

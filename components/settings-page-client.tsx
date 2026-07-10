@@ -24,7 +24,7 @@ type SettingsPageClientProps = {
   groupId: string;
   members: Member[];
   ownerId: string | null;
-  canManageMembers: boolean;
+  canManageGroup: boolean;
 };
 
 type Category = {
@@ -48,7 +48,7 @@ export function SettingsPageClient({
   groupId,
   members,
   ownerId,
-  canManageMembers,
+  canManageGroup,
 }: SettingsPageClientProps) {
   const [search, setSearch] = useState("");
   const [creatingCategoryOpen, setCreatingCategoryOpen] = useState(false);
@@ -84,7 +84,7 @@ export function SettingsPageClient({
           groupId={groupId}
           members={members}
           ownerId={ownerId}
-          canManageMembers={canManageMembers}
+          canManageGroup={canManageGroup}
         />
 
         <Card>

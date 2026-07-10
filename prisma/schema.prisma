@@ -87,7 +87,7 @@ model Item {
 
   group    Group         @relation(fields: [groupId], references: [id], onDelete: Cascade)
   prices   PriceRecord[]
-  category Category?     @relation(fields: [categoryId], references: [id])
+  category Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@unique([groupId, name])
   @@index([groupId])
@@ -111,7 +111,7 @@ model Category {
   name    String
   groupId String
 
-  group Group  @relation(fields: [groupId], references: [id])
+  group Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   items Item[]
 
   @@unique([groupId, name])

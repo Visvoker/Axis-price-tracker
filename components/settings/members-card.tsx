@@ -21,21 +21,21 @@ type MembersCardProps = {
   groupId: string;
   members: Member[];
   ownerId: string | null;
-  canManageMembers: boolean;
+  canManageGroup: boolean;
 };
 
 export function MembersCard({
   groupId,
   members,
   ownerId,
-  canManageMembers,
+  canManageGroup,
 }: MembersCardProps) {
   return (
     <Card className="gap-3 py-0 pt-3">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-lg">Members</CardTitle>
 
-        {canManageMembers && <CreateInviteButton groupId={groupId} />}
+        {canManageGroup && <CreateInviteButton groupId={groupId} />}
       </CardHeader>
 
       <CardContent className="divide-y p-0 border-t">
