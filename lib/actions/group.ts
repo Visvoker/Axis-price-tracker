@@ -43,6 +43,109 @@ export async function createGroup(
   redirect(`/${group.id}`);
 }
 
+export async function updateGroup(groupId: string, name: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const trimmedName = name.trim();
+
+  if (!trimmedName) {
+    throw new Error("群組名稱不能為空");
+  }
+
+  const membership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: true,
+    },
+  });
+
+  if (!membership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = membership.group.ownerId === session.user.id;
+  const isAdmin = membership.role === "ADMIN";
+
+  if (!isOwner && !isAdmin) {
+    throw new Error("You do not have permission to update this group");
+  }
+
+  await prisma.group.update({
+    where: {
+      id: groupId,
+    },
+    data: {
+      name: trimmedName,
+    },
+  });
+
+  revalidatePath(`/${groupId}`);
+  revalidatePath(`/${groupId}/settings`);
+}
+
+export async function deleteGroup(groupId: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const membership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: true,
+    },
+  });
+
+  if (!membership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = membership.group.ownerId === session.user.id;
+
+  if (!isOwner) {
+    throw new Error("Only owner can delete this group");
+  }
+
+  await prisma.group.delete({
+    where: {
+      id: groupId,
+    },
+  });
+
+  const nextMembership = await prisma.groupMember.findFirst({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      group: true,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  if (nextMembership?.group.id) {
+    redirect(`/${nextMembership.group.id}`);
+  }
+
+  redirect("/select-group");
+}
+
 export async function createGroupInvite(groupId: string) {
   const session = await auth();
 
