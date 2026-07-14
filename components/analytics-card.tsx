@@ -17,7 +17,6 @@ type AnalyticsCardProps = {
 
 export const AnalyticsCard = ({
   label,
-  description,
   value,
   variant,
 }: AnalyticsCardProps) => {

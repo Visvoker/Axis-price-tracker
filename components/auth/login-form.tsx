@@ -13,13 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 
-export function LoginForm() {
-  const searchParams = useSearchParams();
+type LoginFormProps = {
+  callbackUrl: string;
+};
 
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/select-group";
-
+export function LoginForm({ callbackUrl }: LoginFormProps) {
   return (
     <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-sm">

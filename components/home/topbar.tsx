@@ -24,6 +24,7 @@ type TopbarProps = {
     name: string;
     role: "ADMIN" | "MEMBER";
   }[];
+  ownerName: string;
 };
 
 export function Topbar(props: TopbarProps) {

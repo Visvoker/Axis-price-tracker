@@ -21,7 +21,17 @@ export async function getGroupWithMembership(userId: string, groupId: string) {
       groupId,
     },
     include: {
-      group: true,
+      group: {
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
     },
   });
 }

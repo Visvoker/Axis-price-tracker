@@ -49,8 +49,8 @@ export function ItemsTable({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Name</TableHead>
-            <TableHead>Latest Price</TableHead>
-            <TableHead>Last Updated</TableHead>
+            <TableHead className="text-right">Latest Price</TableHead>
+            <TableHead className="text-right">Last Updated</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -58,7 +58,7 @@ export function ItemsTable({
           {items.map((item) => (
             <TableRow key={item.id}>
               {/* Name */}
-              <TableCell className="font-medium">
+              <TableCell className="font-medium ">
                 <Link
                   href={`/${groupId}/items/${item.id}`}
                   className="hover:underline"
@@ -68,14 +68,14 @@ export function ItemsTable({
               </TableCell>
 
               {/* Latest Price */}
-              <TableCell>
+              <TableCell className="text-right">
                 {item.latestPrice
                   ? `${item.latestPrice.toLocaleString()}`
                   : "-"}
               </TableCell>
 
               {/* Last Updated */}
-              <TableCell className="text-muted-foreground ">
+              <TableCell className="text-muted-foreground text-right">
                 {item.updatedAt}
               </TableCell>
 

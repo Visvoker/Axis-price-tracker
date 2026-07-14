@@ -11,6 +11,7 @@ type SidebarProps = {
     name: string;
     role: "ADMIN" | "MEMBER";
   }[];
+  ownerName: string;
 };
 
 export function Sidebar({
@@ -20,6 +21,7 @@ export function Sidebar({
   name,
   image,
   groups,
+  ownerName,
 }: SidebarProps) {
   return (
     <SidebarContent
@@ -29,6 +31,7 @@ export function Sidebar({
       name={name}
       image={image}
       groups={groups}
+      ownerName={ownerName}
     />
   );
 }

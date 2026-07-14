@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronsUpDown, CircleCheck, Plus } from "lucide-react";
+import { ChevronsUpDown, CircleCheck, Plus, Crown } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -19,12 +19,14 @@ type WorkspaceSwitcherProps = {
     name: string;
     role: "ADMIN" | "MEMBER";
   }[];
+  ownerName: string;
 };
 
 export function WorkspaceSwitcher({
   currentGroupId,
   currentGroupName,
   groups,
+  ownerName,
 }: WorkspaceSwitcherProps) {
   const groupInitialName =
     currentGroupName.trim().charAt(0).toUpperCase() || "A";
@@ -38,8 +40,9 @@ export function WorkspaceSwitcher({
 
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{currentGroupName}</p>
-          <p className="truncate text-xs text-muted-foreground">
-            Current workspace
+          <p className="flex items-center gap-1 truncate text-xs text-muted-foreground">
+            <Crown className="size-3 shrink-0" />
+            <span className="truncate">{ownerName}</span>
           </p>
         </div>
 
