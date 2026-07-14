@@ -12,7 +12,7 @@ export async function getTopMoversByGroupId(groupId: string, days: number) {
       },
     },
     include: {
-      item: true,
+      item: { include: { category: { select: { name: true } } } },
     },
     orderBy: {
       createdAt: "desc",
@@ -57,7 +57,7 @@ export async function getTopMoversByGroupId(groupId: string, days: number) {
       return {
         itemId: record.item.id,
         itemName: record.item.name,
-        category: record.item.category,
+        category: record.item.category?.name || "未分類",
 
         latestPrice,
         baselinePrice,

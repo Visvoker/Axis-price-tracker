@@ -21,6 +21,7 @@ export default async function PriceRecordsPage({
 
   return (
     <PriceRecordsClient
+      key={groupId}
       groupId={groupId}
       items={items}
       initialSelectedItem={selectedItem}

@@ -52,6 +52,7 @@ export default async function DashboardLayout({
           }))}
           name={session.user.name}
           image={session.user.image}
+          ownerName={membership.group.owner?.name ?? "Unknown owner"}
         />
       </div>
       <main className="min-h-0 min-w-0 flex-1 overflow-y-auto md:rounded-lg bg-background md:m-2">
@@ -67,6 +68,7 @@ export default async function DashboardLayout({
             name: membership.group.name,
             role: membership.role,
           }))}
+          ownerName={membership.group.owner?.name ?? "Unknown owner"}
         />
         <div className="px-3 pb-3 md:px-6">
           <PageContainer>{children}</PageContainer>

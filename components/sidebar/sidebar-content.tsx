@@ -13,15 +13,16 @@ type SidebarContentProps = {
     name: string;
     role: "ADMIN" | "MEMBER";
   }[];
+  ownerName: string;
 };
 
 export function SidebarContent({
   groupId,
   groupName,
-  role,
   name,
   image,
   groups,
+  ownerName,
 }: SidebarContentProps) {
   const navItems: NavItem[] = [
     {
@@ -62,6 +63,7 @@ export function SidebarContent({
             currentGroupId={groupId}
             currentGroupName={groupName}
             groups={groups}
+            ownerName={ownerName}
           />
         </div>
 

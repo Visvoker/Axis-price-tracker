@@ -22,6 +22,7 @@ type MobileSidebarProps = {
     name: string;
     role: "ADMIN" | "MEMBER";
   }[];
+  ownerName: string;
 };
 
 export function MobileSidebar(props: MobileSidebarProps) {

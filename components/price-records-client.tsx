@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { EditPriceRecordsDialog } from "./price/edit-price-records-dialog";
 import toast from "react-hot-toast";
 import { DeletePriceRecordsDialog } from "./price/delete-price-records-dialog";
+import { useRecentItems } from "@/hooks/use-recent-items";
 
 type ItemOption = {
   id: string;
@@ -27,16 +28,12 @@ type ItemOption = {
   category: {
     name: string;
     id: string;
-  };
+  } | null;
 };
 
 type SelectedItemData = {
   id: string;
   name: string;
-  category: {
-    name: string;
-    id: string;
-  };
   prices: {
     id: string;
     price: number;
@@ -44,6 +41,7 @@ type SelectedItemData = {
     createdBy?: { name: string | null } | null;
   }[];
 };
+
 type PriceRecordsClientProps = {
   groupId: string;
   items: ItemOption[];
@@ -58,8 +56,7 @@ export function PriceRecordsClient({
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [addingPriceOpen, setAddingPriceOpen] = useState(false);
-  const [recentItems, setRecentItems] = useState<ItemOption[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [recentItems, setRecentItems] = useRecentItems(groupId);
 
   const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
   const [deletingPriceId, setDeletingPriceId] = useState<string | null>(null);
@@ -83,7 +80,7 @@ export function PriceRecordsClient({
     return items.filter((item) => item.name.toLowerCase().includes(value));
   }, [items, search]);
 
-  async function handleSelectItem(item: ItemOption) {
+  function handleSelectItem(item: ItemOption) {
     setSearch("");
 
     setRecentItems((prev) => {
@@ -98,22 +95,6 @@ export function PriceRecordsClient({
 
     router.push(`/${groupId}/price-records?itemId=${item.id}`);
   }
-
-  useEffect(() => {
-    const saved = localStorage.getItem(`recentItems-${groupId}`);
-
-    if (saved) {
-      setRecentItems(JSON.parse(saved));
-    }
-
-    setIsLoaded(true);
-  }, [groupId]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    localStorage.setItem(`recentItems-${groupId}`, JSON.stringify(recentItems));
-  }, [recentItems, groupId, isLoaded]);
 
   return (
     <div className="space-y-6 overflow-y-auto pt-3">
@@ -144,7 +125,7 @@ export function PriceRecordsClient({
                   >
                     <span className="font-medium">{item.name}</span>
                     <span className="text-muted-foreground">
-                      {item.category?.name ?? "No category"}{" "}
+                      {item.category?.name ?? "No category"}
                     </span>
                   </button>
                 ))}
