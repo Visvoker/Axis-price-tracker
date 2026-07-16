@@ -50,7 +50,7 @@ export async function ActivitySection({ groupId }: ActivitySectionProps) {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  {record.createdBy.name ?? "Unknown"} ·{" "}
+                  {record.createdBy?.name ?? "Unknown"} ·{" "}
                   {record.createdAt.toLocaleString("zh-TW")}
                 </p>
               </div>

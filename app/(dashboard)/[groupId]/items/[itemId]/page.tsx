@@ -25,7 +25,7 @@ export default async function ItemDetailPage({
             id: price.id,
             price: Number(price.price),
             createdAt: price.createdAt,
-            createdBy: { name: price.createdBy.name },
+            createdBy: { name: price.createdBy?.name ?? "Unknown" },
           })),
         }}
       />

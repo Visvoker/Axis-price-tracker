@@ -182,7 +182,7 @@ export type PriceRecordGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type PriceRecordGroupByOutputType = {
   id: string
   itemId: string
-  createdById: string
+  createdById: string | null
   price: runtime.Decimal
   createdAt: Date
   _count: PriceRecordCountAggregateOutputType | null
@@ -213,17 +213,17 @@ export type PriceRecordWhereInput = {
   NOT?: Prisma.PriceRecordWhereInput | Prisma.PriceRecordWhereInput[]
   id?: Prisma.StringFilter<"PriceRecord"> | string
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
-  createdById?: Prisma.StringFilter<"PriceRecord"> | string
+  createdById?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
   price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
-  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type PriceRecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
-  createdById?: Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   item?: Prisma.ItemOrderByWithRelationInput
@@ -236,17 +236,17 @@ export type PriceRecordWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PriceRecordWhereInput[]
   NOT?: Prisma.PriceRecordWhereInput | Prisma.PriceRecordWhereInput[]
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
-  createdById?: Prisma.StringFilter<"PriceRecord"> | string
+  createdById?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
   price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
-  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type PriceRecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
-  createdById?: Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.PriceRecordCountOrderByAggregateInput
@@ -262,7 +262,7 @@ export type PriceRecordScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PriceRecordScalarWhereWithAggregatesInput | Prisma.PriceRecordScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
   itemId?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
-  createdById?: Prisma.StringWithAggregatesFilter<"PriceRecord"> | string
+  createdById?: Prisma.StringNullableWithAggregatesFilter<"PriceRecord"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PriceRecord"> | Date | string
 }
@@ -272,13 +272,13 @@ export type PriceRecordCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutPricesInput
-  createdBy: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
 }
 
 export type PriceRecordUncheckedCreateInput = {
   id?: string
   itemId: string
-  createdById: string
+  createdById?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
 }
@@ -288,13 +288,13 @@ export type PriceRecordUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutPricesNestedInput
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPriceRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutPriceRecordsNestedInput
 }
 
 export type PriceRecordUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -302,7 +302,7 @@ export type PriceRecordUncheckedUpdateInput = {
 export type PriceRecordCreateManyInput = {
   id?: string
   itemId: string
-  createdById: string
+  createdById?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
 }
@@ -316,7 +316,7 @@ export type PriceRecordUpdateManyMutationInput = {
 export type PriceRecordUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -501,7 +501,7 @@ export type PriceRecordScalarWhereInput = {
   NOT?: Prisma.PriceRecordScalarWhereInput | Prisma.PriceRecordScalarWhereInput[]
   id?: Prisma.StringFilter<"PriceRecord"> | string
   itemId?: Prisma.StringFilter<"PriceRecord"> | string
-  createdById?: Prisma.StringFilter<"PriceRecord"> | string
+  createdById?: Prisma.StringNullableFilter<"PriceRecord"> | string | null
   price?: Prisma.DecimalFilter<"PriceRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PriceRecord"> | Date | string
 }
@@ -510,12 +510,12 @@ export type PriceRecordCreateWithoutItemInput = {
   id?: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  createdBy: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutPriceRecordsInput
 }
 
 export type PriceRecordUncheckedCreateWithoutItemInput = {
   id?: string
-  createdById: string
+  createdById?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
 }
@@ -576,7 +576,7 @@ export type PriceRecordUncheckedUpdateManyWithoutCreatedByInput = {
 
 export type PriceRecordCreateManyItemInput = {
   id?: string
-  createdById: string
+  createdById?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
 }
@@ -585,19 +585,19 @@ export type PriceRecordUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPriceRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutPriceRecordsNestedInput
 }
 
 export type PriceRecordUncheckedUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PriceRecordUncheckedUpdateManyWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -611,7 +611,7 @@ export type PriceRecordSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   price?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
 
 export type PriceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -621,7 +621,7 @@ export type PriceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   price?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
 
 export type PriceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -631,7 +631,7 @@ export type PriceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   price?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["priceRecord"]>
 
 export type PriceRecordSelectScalar = {
@@ -645,27 +645,27 @@ export type PriceRecordSelectScalar = {
 export type PriceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "createdById" | "price" | "createdAt", ExtArgs["result"]["priceRecord"]>
 export type PriceRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }
 export type PriceRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }
 export type PriceRecordIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.PriceRecord$createdByArgs<ExtArgs>
 }
 
 export type $PriceRecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PriceRecord"
   objects: {
     item: Prisma.$ItemPayload<ExtArgs>
-    createdBy: Prisma.$UserPayload<ExtArgs>
+    createdBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     itemId: string
-    createdById: string
+    createdById: string | null
     price: runtime.Decimal
     createdAt: Date
   }, ExtArgs["result"]["priceRecord"]>
@@ -1063,7 +1063,7 @@ readonly fields: PriceRecordFieldRefs;
 export interface Prisma__PriceRecordClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.PriceRecord$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PriceRecord$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1496,6 +1496,25 @@ export type PriceRecordDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many PriceRecords to delete.
    */
   limit?: number
+}
+
+/**
+ * PriceRecord.createdBy
+ */
+export type PriceRecord$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

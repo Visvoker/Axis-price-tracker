@@ -146,6 +146,76 @@ export async function deleteGroup(groupId: string) {
   redirect("/select-group");
 }
 
+export async function leaveGroup(groupId: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const membership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: {
+        include: {
+          members: true,
+        },
+      },
+    },
+  });
+
+  if (!membership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = membership.group.ownerId === session.user.id;
+  const memberCount = membership.group.members.length;
+
+  if (isOwner && memberCount > 1) {
+    throw new Error("Owner cannot leave a group with other members");
+  }
+
+  if (isOwner && memberCount === 1) {
+    await prisma.group.delete({
+      where: {
+        id: groupId,
+      },
+    });
+  } else {
+    await prisma.groupMember.delete({
+      where: {
+        userId_groupId: {
+          userId: session.user.id,
+          groupId,
+        },
+      },
+    });
+  }
+
+  const nextMembership = await prisma.groupMember.findFirst({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      group: true,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  if (nextMembership?.group.id) {
+    redirect(`/${nextMembership.group.id}`);
+  }
+
+  redirect("/select-group");
+}
+
 export async function createGroupInvite(groupId: string) {
   const session = await auth();
 
@@ -181,7 +251,7 @@ export async function createGroupInvite(groupId: string) {
       groupId,
       createdById: session.user.id,
       code: nanoid(12),
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
     },
   });
 
@@ -239,4 +309,139 @@ export async function acceptGroupInvite(code: string) {
   });
 
   redirect(`/${invite.groupId}`);
+}
+
+export async function updateGroupMemberRole({
+  groupId,
+  memberId,
+  role,
+}: {
+  groupId: string;
+  memberId: string;
+  role: "ADMIN" | "MEMBER";
+}) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const currentMembership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: true,
+    },
+  });
+
+  if (!currentMembership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = currentMembership.group.ownerId === session.user.id;
+
+  if (!isOwner) {
+    throw new Error("Only owner can update member roles");
+  }
+
+  const targetMember = await prisma.groupMember.findFirst({
+    where: {
+      id: memberId,
+      groupId,
+    },
+  });
+
+  if (!targetMember) {
+    throw new Error("Member not found");
+  }
+
+  if (targetMember.userId === currentMembership.group.ownerId) {
+    throw new Error("Owner role cannot be changed");
+  }
+
+  await prisma.groupMember.update({
+    where: {
+      id: memberId,
+    },
+    data: {
+      role,
+    },
+  });
+
+  revalidatePath(`/${groupId}/settings`);
+}
+
+export async function removeGroupMember({
+  groupId,
+  memberId,
+}: {
+  groupId: string;
+  memberId: string;
+}) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const currentMembership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: true,
+    },
+  });
+
+  if (!currentMembership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = currentMembership.group.ownerId === session.user.id;
+  const isAdmin = currentMembership.role === "ADMIN";
+
+  if (!isOwner && !isAdmin) {
+    throw new Error("You do not have permission to remove members");
+  }
+
+  const targetMember = await prisma.groupMember.findFirst({
+    where: {
+      id: memberId,
+      groupId,
+    },
+  });
+
+  if (!targetMember) {
+    throw new Error("Member not found");
+  }
+
+  if (targetMember.userId === currentMembership.group.ownerId) {
+    throw new Error("Owner cannot be removed");
+  }
+
+  const isTargetOwner = targetMember.userId === currentMembership.group.ownerId;
+  const isTargetMember = targetMember.role === "MEMBER";
+
+  if (isTargetOwner) {
+    throw new Error("Owner cannot be removed");
+  }
+
+  if (isAdmin && !isOwner && !isTargetMember) {
+    throw new Error("Admin can only remove members");
+  }
+
+  await prisma.groupMember.delete({
+    where: {
+      id: memberId,
+    },
+  });
+
+  revalidatePath(`/${groupId}/settings`);
 }
