@@ -10,11 +10,11 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const group = await getFirstGroupByUserId(session.user.id);
+  const membership = await getFirstGroupByUserId(session.user.id);
 
-  if (!group) {
+  if (!membership) {
     redirect("/select-group");
   }
 
-  redirect(`/${group.id}`);
+  redirect(`/${membership.group.id}`);
 }

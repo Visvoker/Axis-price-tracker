@@ -81,7 +81,6 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
           Manage invite links and group settings.
         </p>
       </div>
-      <CreateInviteButton groupId={groupId} />
 
       <div className="space-y-2">
         {invites.map((invite) => (
@@ -95,13 +94,18 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
           </div>
         ))}
       </div>
+
       <SettingsPageClient
         categories={categories}
         groupId={groupId}
         members={group?.members ?? []}
         ownerId={group?.ownerId ?? null}
         canManageGroup={canManageGroup}
+        isCurrentUserOwner={isOwner}
+        isCurrentUserAdmin={isAdmin}
+        currentUserId={session.user.id}
       />
+
       <GroupManagementCard
         groupId={groupId}
         groupName={group?.name || "123"}

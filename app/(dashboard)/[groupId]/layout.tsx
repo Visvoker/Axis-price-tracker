@@ -31,12 +31,15 @@ export default async function DashboardLayout({
   const membership = await getGroupWithMembership(session.user.id, groupId);
 
   if (!membership) {
-    redirect("/select-group");
+    redirect(`/select-group?accessDenied=${groupId}`);
   }
 
   const categories = await getCategoriesByGroupId(groupId);
 
   const groups = await getGroupsByUserId(session.user.id);
+
+  console.log("dashboard layout groupId:", groupId);
+  console.log("membership exists:", !!membership);
 
   return (
     <div className="flex h-full overflow-hidden bg-muted">
