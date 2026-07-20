@@ -246,12 +246,88 @@ export async function createGroupInvite(groupId: string) {
     throw new Error("Only owner or admin can create invite links");
   }
 
+  const now = new Date();
+
+  const existingInvite = await prisma.groupInvite.findFirst({
+    where: {
+      groupId,
+      expiresAt: {
+        gt: now,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (existingInvite) {
+    return existingInvite;
+  }
+
   const invite = await prisma.groupInvite.create({
     data: {
       groupId,
       createdById: session.user.id,
       code: nanoid(12),
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 1),
+    },
+  });
+
+  revalidatePath(`/${groupId}/settings`);
+
+  return invite;
+}
+
+export async function regenerateGroupInvite(groupId: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const membership = await prisma.groupMember.findUnique({
+    where: {
+      userId_groupId: {
+        userId: session.user.id,
+        groupId,
+      },
+    },
+    include: {
+      group: true,
+    },
+  });
+
+  if (!membership) {
+    throw new Error("You are not a member of this group");
+  }
+
+  const isOwner = membership.group.ownerId === session.user.id;
+  const isAdmin = membership.role === "ADMIN";
+
+  if (!isOwner && !isAdmin) {
+    throw new Error("Only owner or admin can regenerate invite links");
+  }
+
+  const now = new Date();
+
+  await prisma.groupInvite.updateMany({
+    where: {
+      groupId,
+      expiresAt: {
+        gt: now,
+      },
+    },
+    data: {
+      expiresAt: now,
+    },
+  });
+
+  const invite = await prisma.groupInvite.create({
+    data: {
+      groupId,
+      createdById: session.user.id,
+      code: nanoid(12),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 1),
     },
   });
 

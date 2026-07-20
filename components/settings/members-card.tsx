@@ -6,14 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { CreateInviteButton } from "@/components/create-invite-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
@@ -67,8 +64,6 @@ export function MembersCard({
   const removingMember =
     members.find((member) => member.id === removingMemberId) ?? null;
 
-  const canInviteMembers = isCurrentUserOwner || isCurrentUserAdmin;
-
   const handleUpdateRole = (memberId: string, role: "ADMIN" | "MEMBER") => {
     startTransition(async () => {
       try {
@@ -112,8 +107,6 @@ export function MembersCard({
       <Card className="gap-3 py-0 pt-3">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">Members</CardTitle>
-
-          {canInviteMembers && <CreateInviteButton groupId={groupId} />}
         </CardHeader>
 
         <CardContent className="divide-y p-0 border-t">
@@ -184,7 +177,6 @@ export function MembersCard({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuGroup>
-                          <DropdownMenuLabel>Role change</DropdownMenuLabel>
                           {canChangeRole && isMemberRegular && (
                             <DropdownMenuItem
                               onClick={() =>
@@ -207,12 +199,11 @@ export function MembersCard({
                         </DropdownMenuGroup>
                         {canRemoveMember && (
                           <>
-                            <DropdownMenuSeparator />
                             <DropdownMenuItem
                               className="text-red-500 focus:bg-red-100 focus:text-red-500"
                               onClick={() => setRemovingMemberId(member.id)}
                             >
-                              Remove member
+                              移除成員
                             </DropdownMenuItem>
                           </>
                         )}

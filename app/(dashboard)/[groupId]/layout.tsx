@@ -38,9 +38,6 @@ export default async function DashboardLayout({
 
   const groups = await getGroupsByUserId(session.user.id);
 
-  console.log("dashboard layout groupId:", groupId);
-  console.log("membership exists:", !!membership);
-
   return (
     <div className="flex h-full overflow-hidden bg-muted">
       <div className="hidden md:flex">

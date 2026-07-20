@@ -73,6 +73,9 @@ export function ItemsPageClient({
   const editingItem = items.find((item) => item.id === editingItemId) ?? null;
   const deletingItem = items.find((item) => item.id === deletingItemId) ?? null;
 
+  const hasItems = items.length > 0;
+  const hasFilteredItems = filteredItems.length > 0;
+
   return (
     <div className="space-y-6 pt-2 min-h-0 overflow-y-auto">
       <ItemsToolbar
@@ -89,23 +92,39 @@ export function ItemsPageClient({
         }}
       />
 
-      <ItemsTable
-        items={paginatedItems}
-        onEdit={setEditingItemId}
-        onDelete={setDeletingItemId}
-        onAddPrice={setAddingPriceItemId}
-      />
+      {!hasItems ? (
+        <div className="flex min-h-40 items-center justify-center rounded-lg border text-center">
+          <p className="text-sm text-muted-foreground">
+            目前還沒有商品，新增第一個商品後就能開始記錄價格。
+          </p>
+        </div>
+      ) : !hasFilteredItems ? (
+        <div className="flex min-h-40 items-center justify-center rounded-lg border text-center">
+          <p className="text-sm text-muted-foreground">
+            找不到符合條件的商品，請調整搜尋或分類篩選。
+          </p>
+        </div>
+      ) : (
+        <>
+          <ItemsTable
+            items={paginatedItems}
+            onEdit={setEditingItemId}
+            onDelete={setDeletingItemId}
+            onAddPrice={setAddingPriceItemId}
+          />
 
-      <TablePagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        rowsPerPage={rowsPerPage}
-        totalItems={totalItems}
-        startIndex={startIndex}
-        endIndex={endIndex}
-        onPageChange={setCurrentPage}
-        onRowsPerPageChange={setRowsPerPage}
-      />
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            rowsPerPage={rowsPerPage}
+            totalItems={totalItems}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+          />
+        </>
+      )}
 
       <AddPriceDialog
         open={!!addingPriceItemId}

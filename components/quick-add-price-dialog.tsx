@@ -48,7 +48,6 @@ export function QuickAddPriceDialog({
   const [open, setOpen] = useState(false);
 
   const loadItems = async () => {
-    console.log("loadItems start, groupId:", groupId);
     setLoadingItems(true);
 
     try {

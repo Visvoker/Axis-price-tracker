@@ -15,7 +15,7 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <main className="flex h-full min-h-0 flex-col pt-6 gap-y-3 w-full">
       <DashboardSummary groupId={groupId} />
-      <section className="flex min-h-0 flex-col gap-3 lg:flex-row">
+      <section className="flex md:min-h-0 flex-col gap-3 lg:flex-row">
         <div className="min-w-0 flex-1">
           <ActivitySection groupId={groupId} />
         </div>

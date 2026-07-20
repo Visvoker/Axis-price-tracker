@@ -19,12 +19,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteGroup, leaveGroup, updateGroup } from "@/lib/actions/group";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { GroupInviteCard } from "./group-invite-card";
+
+type ActiveInvite = {
+  code: string;
+  expiresAt: string | null;
+};
 
 type GroupManagementCardProps = {
   groupId: string;
   groupName: string;
   canUpdateGroup: boolean;
   canDeleteGroup: boolean;
+  activeInvite: ActiveInvite | null;
 };
 
 export function GroupManagementCard({
@@ -32,9 +39,11 @@ export function GroupManagementCard({
   groupName,
   canUpdateGroup,
   canDeleteGroup,
+  activeInvite,
 }: GroupManagementCardProps) {
   const [name, setName] = useState(groupName);
   const [isUpdating, startUpdateTransition] = useTransition();
+  const [isLeaving, startLeaveTransition] = useTransition();
   const [isDeleting, startDeleteTransition] = useTransition();
   const router = useRouter();
 
@@ -62,8 +71,8 @@ export function GroupManagementCard({
     });
   };
 
-  const handleleaveGroup = () => {
-    startDeleteTransition(async () => {
+  const handleLeaveGroup = () => {
+    startLeaveTransition(async () => {
       try {
         await leaveGroup(groupId);
       } catch (error) {
@@ -75,27 +84,43 @@ export function GroupManagementCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">群組名稱</CardTitle>
+        <CardTitle className="text-xl">群組設定</CardTitle>
       </CardHeader>
 
       <CardContent>
         <div className="flex justify-between gap-2 pr-4">
-          <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={!canUpdateGroup || isUpdating}
-            className="w-full max-w-md"
-            maxLength={32}
-          />
+          <div className="flex flex-col space-y-1 w-full">
+            <p className="text-base font-medium ">群組名稱</p>
+            <div className="flex items-center justify-between gap-2 py-1">
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={!canUpdateGroup || isUpdating}
+                className="min-w-0 flex-1 sm:max-w-md truncate "
+                maxLength={28}
+              />
 
-          <Button
-            onClick={handleUpdate}
-            disabled={
-              !canUpdateGroup || isUpdating || groupName === trimmedName
-            }
-          >
-            {isUpdating ? "儲存中..." : "儲存"}
-          </Button>
+              <Button
+                onClick={handleUpdate}
+                disabled={
+                  !canUpdateGroup || isUpdating || groupName === trimmedName
+                }
+                className="shrink-0"
+              >
+                {isUpdating ? "儲存中..." : "儲存"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+
+      <CardContent>
+        <div className="flex justify-between gap-2 pr-4">
+          <div className="flex flex-col space-y-1 w-full">
+            <p className="text-base font-medium ">群組邀請</p>
+
+            <GroupInviteCard groupId={groupId} activeInvite={activeInvite} />
+          </div>
         </div>
       </CardContent>
 
@@ -126,16 +151,16 @@ export function GroupManagementCard({
                   </AlertDialogHeader>
 
                   <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isDeleting}>
+                    <AlertDialogCancel disabled={isLeaving}>
                       取消
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      disabled={isDeleting}
-                      onClick={handleleaveGroup}
+                      disabled={isLeaving}
+                      onClick={handleLeaveGroup}
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/10"
                       variant="destructive"
                     >
-                      {isDeleting ? "退出中..." : "確認退出"}
+                      {isLeaving ? "退出中..." : "確認退出"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
