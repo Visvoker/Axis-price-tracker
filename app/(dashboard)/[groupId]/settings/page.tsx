@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { getCategoriesByGroupId } from "@/lib/queries/category";
 
-import { CreateInviteButton } from "@/components/create-invite-button";
 import { SettingsPageClient } from "@/components/settings-page-client";
 import { GroupManagementCard } from "@/components/settings/group-management-card";
 
@@ -64,12 +63,20 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   const canUpdateGroup = canManageGroup;
   const canDeleteGroup = isOwner;
 
-  const invites = await prisma.groupInvite.findMany({
+  const activeInvite = await prisma.groupInvite.findFirst({
     where: {
       groupId,
+      expiresAt: {
+        gt: new Date(),
+      },
     },
     orderBy: {
       createdAt: "desc",
+    },
+    select: {
+      id: true,
+      code: true,
+      expiresAt: true,
     },
   });
 
@@ -77,22 +84,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     <div className="space-y-6 pt-3">
       <div>
         <h1 className="text-2xl font-semibold">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage invite links and group settings.
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        {invites.map((invite) => (
-          <div key={invite.id} className="rounded-lg border p-4">
-            <p className="text-sm font-medium">
-              localhost:3000/invite/{invite.code}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Expires at: {invite.expiresAt?.toLocaleString("zh-TW")}
-            </p>
-          </div>
-        ))}
+        <p className="text-muted-foreground text-sm"></p>
       </div>
 
       <SettingsPageClient
@@ -108,7 +100,15 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
       <GroupManagementCard
         groupId={groupId}
-        groupName={group?.name || "123"}
+        activeInvite={
+          activeInvite
+            ? {
+                code: activeInvite.code,
+                expiresAt: activeInvite.expiresAt?.toISOString() ?? null,
+              }
+            : null
+        }
+        groupName={group?.name || ""}
         canUpdateGroup={canUpdateGroup}
         canDeleteGroup={canDeleteGroup}
       />
