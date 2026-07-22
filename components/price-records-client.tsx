@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { PriceChart } from "@/components/items/price-chart";
-import { AddPriceDialog } from "@/components/items/add-price-dialog";
+import { ItemAddPriceDialog } from "@/components/items/item-add-price-dialog";
 import { PriceHistoryTable } from "@/components/items/price-history-table";
 
 import {
@@ -177,7 +177,7 @@ export function PriceRecordsClient({
               </CardTitle>
 
               <div>
-                <AddPriceDialog
+                <ItemAddPriceDialog
                   open={addingPriceOpen}
                   onOpenChange={setAddingPriceOpen}
                   item={selectedItemData}

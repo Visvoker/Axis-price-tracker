@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ItemsToolbar } from "./items-toolbar";
 
 import { ItemsTable } from "@/components/items/items-table";
-import { AddPriceDialog } from "@/components/items/add-price-dialog";
+import { ItemAddPriceDialog } from "@/components/items/item-add-price-dialog";
 import { EditItemDialog } from "@/components/items/edit-item-dialog";
 import { DeleteItemDialog } from "@/components/items/delete-item-dialog";
 
@@ -126,7 +126,7 @@ export function ItemsPageClient({
         </>
       )}
 
-      <AddPriceDialog
+      <ItemAddPriceDialog
         open={!!addingPriceItemId}
         onOpenChange={(open) => {
           if (!open) setAddingPriceItemId(null);

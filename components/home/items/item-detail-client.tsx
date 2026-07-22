@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { PriceChart } from "@/components/items/price-chart";
 import { PriceHistoryTable } from "@/components/items/price-history-table";
 import { Button } from "@/components/ui/button";
-import { AddPriceDialog } from "@/components/items/add-price-dialog";
+import { ItemAddPriceDialog } from "@/components/items/item-add-price-dialog";
 import {
   createPriceRecord,
   deletePriceRecord,
@@ -79,7 +79,7 @@ export default function ItemDetailClient({ item }: ItemDetailClientProps) {
         onDelete={setDeletingPriceId}
       />
 
-      <AddPriceDialog
+      <ItemAddPriceDialog
         open={addingPriceOpen}
         onOpenChange={setAddingPriceOpen}
         item={{

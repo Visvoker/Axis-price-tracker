@@ -7,7 +7,7 @@ import { CreateItemDialog } from "../items/create-item-dialog";
 import { createItem } from "@/lib/actions/item";
 import { createPriceRecord } from "@/lib/actions/price";
 
-import { QuickAddPriceDialog } from "../quick-add-price-dialog";
+import { GlobalAddPriceDialog } from "../global-add-price-dialog";
 
 type TopbarProps = {
   groupId: string;
@@ -41,7 +41,7 @@ export function Topbar(props: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        <QuickAddPriceDialog
+        <GlobalAddPriceDialog
           groupId={groupId}
           onSubmit={async (value) => {
             await createPriceRecord({

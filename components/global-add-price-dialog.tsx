@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, type SubmitEvent } from "react";
 import { CirclePlus } from "lucide-react";
 import { NumericFormat } from "react-number-format";
 
@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 import { formatPriceToUnit } from "@/lib/utils/format";
 import { getItemsForPriceSelect } from "@/lib/actions/item";
 
-type QuickAddPriceDialogProps = {
+type GlobalAddPriceDialogProps = {
   groupId: string;
   onSubmit: (values: { itemId: string; price: number }) => Promise<void>;
 };
@@ -35,17 +35,18 @@ type ItemOption = {
   } | null;
 };
 
-export function QuickAddPriceDialog({
+export function GlobalAddPriceDialog({
   groupId,
   onSubmit,
-}: QuickAddPriceDialogProps) {
+}: GlobalAddPriceDialogProps) {
   const [price, setPrice] = useState("");
   const [items, setItems] = useState<ItemOption[]>([]);
   const [loadingItems, setLoadingItems] = useState(false);
   const [saving, setSaving] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState("");
-
   const [open, setOpen] = useState(false);
+
+  const priceInputRef = useRef<HTMLInputElement>(null);
 
   const loadItems = async () => {
     setLoadingItems(true);
@@ -94,7 +95,8 @@ export function QuickAddPriceDialog({
     setPrice("");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: SubmitEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     const parsedPrice = Number(price);
 
     if (!selectedItemId) return;
@@ -135,65 +137,73 @@ export function QuickAddPriceDialog({
         </DialogTrigger>
 
         <DialogContent className="max-w-sm sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-lg flex flex-col justify-between center">
-              <p className="flex-1">Add Price Record</p>
-            </DialogTitle>
-          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <DialogHeader>
+              <DialogTitle className="text-lg flex flex-col justify-between center">
+                <p className="flex-1">Add Price Record</p>
+              </DialogTitle>
+            </DialogHeader>
 
-          <div className="space-y-2">
-            <Label>
-              Item
-              <span className="text-xs text-muted-foreground">
-                總數: {items.length}
-              </span>
-            </Label>
+            <div className="space-y-2">
+              <Label>
+                Item
+                <span className="text-xs text-muted-foreground">
+                  總數: {items.length}
+                </span>
+              </Label>
 
-            <GroupedSelect
-              value={selectedItemId}
-              options={groupedItemOptions}
-              onChange={(value) => {
-                setSelectedItemId(value ?? "");
-              }}
-              placeholder="Search and select item"
-            />
-          </div>
+              <GroupedSelect
+                value={selectedItemId}
+                options={groupedItemOptions}
+                onChange={(value) => {
+                  setSelectedItemId(value ?? "");
 
-          <div className="space-y-2">
-            <Label htmlFor="price">Price</Label>
-            <NumericFormat
-              customInput={Input}
-              className={cn(price && "tracking-wider")}
-              thousandSeparator=","
-              allowNegative={false}
-              value={price}
-              onValueChange={(values) => setPrice(values.value)}
-              placeholder="Enter price"
-            />
+                  requestAnimationFrame(() => {
+                    priceInputRef.current?.focus();
+                  });
+                }}
+                placeholder="Search and select item"
+              />
+            </div>
 
-            {price && (
-              <p className="text-md text-muted-foreground">
-                = {formatPriceToUnit(price)}
-              </p>
-            )}
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="price">Price</Label>
+              <NumericFormat
+                customInput={Input}
+                className={cn(price && "tracking-wider")}
+                thousandSeparator=","
+                allowNegative={false}
+                value={price}
+                onValueChange={(values) => setPrice(values.value)}
+                placeholder="Enter price"
+                getInputRef={priceInputRef}
+              />
 
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setOpen(false)}
-              disabled={saving}
-            >
-              Cancel
-            </Button>
+              {price && (
+                <p className="text-md text-muted-foreground">
+                  = {formatPriceToUnit(price)}
+                </p>
+              )}
+            </div>
 
-            <Button
-              onClick={handleSubmit}
-              disabled={loadingItems || saving || !price || !selectedItemId}
-            >
-              {loadingItems ? "Saving..." : "Save"}
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+                disabled={saving}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                disabled={loadingItems || saving || !price || !selectedItemId}
+              >
+                {loadingItems ? "Saving..." : "Save"}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>

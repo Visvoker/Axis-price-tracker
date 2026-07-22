@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type SidebarUserProps = {
   name?: string | null;
@@ -23,13 +24,18 @@ export function SidebarUser({ name, image }: SidebarUserProps) {
         </span>
       </div>
 
-      <button
-        type="button"
-        onClick={() => signOut()}
-        className="text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <LogOut className="h-4 w-4" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={() => signOut()}
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>Logout</TooltipContent>
+      </Tooltip>
     </div>
   );
 }
